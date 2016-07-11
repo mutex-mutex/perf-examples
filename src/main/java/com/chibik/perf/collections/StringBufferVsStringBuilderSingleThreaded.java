@@ -10,6 +10,9 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 import java.util.concurrent.TimeUnit;
 
 @State(Scope.Benchmark)
+@BenchmarkMode(Mode.SingleShotTime)
+@Warmup(batchSize = 500000, iterations = 500)
+@Measurement(batchSize = 500000, iterations = 500)
 public class StringBufferVsStringBuilderSingleThreaded {
 
     private StringBuilder builder = new StringBuilder(10000000);
