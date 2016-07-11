@@ -1,4 +1,4 @@
-package com.chibik.latency.queue;
+package com.chibik.perf.primitives;
 
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Control;

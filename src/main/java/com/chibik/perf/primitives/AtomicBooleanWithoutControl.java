@@ -1,7 +1,6 @@
-package com.chibik.latency.queue;
+package com.chibik.perf.primitives;
 
 import org.openjdk.jmh.annotations.*;
-import org.openjdk.jmh.infra.Control;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
