@@ -20,7 +20,6 @@ public class RunBenchmark {
                     .include(clazz.getSimpleName())
                     .warmupIterations(10)
                     .measurementIterations(20)
-                    .threads(1)
                     .jvmArgsAppend(
                             "-Xmx2G",
                             "-XX:BiasedLockingStartupDelay=0",
@@ -28,9 +27,7 @@ public class RunBenchmark {
                             "-XX:-TieredCompilation",
                             "-XX:+PrintSafepointStatistics"
                     )
-                    .timeUnit(timeUnit)
                     .forks(1)
-                    .mode(Mode.AverageTime)
                     .build();
 
             new Runner(opt).run();

@@ -1,4 +1,4 @@
-package com.chibik.perf.primitives;
+package com.chibik.perf.concurrency;
 
 import sun.misc.Unsafe;
 
