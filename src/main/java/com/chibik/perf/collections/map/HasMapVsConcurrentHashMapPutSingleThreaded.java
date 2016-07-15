@@ -1,6 +1,7 @@
 package com.chibik.perf.collections.map;
 
 import com.chibik.perf.RunBenchmark;
+import gnu.trove.map.hash.TLongLongHashMap;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.HashMap;
@@ -16,9 +17,11 @@ import java.util.concurrent.TimeUnit;
 @Measurement(batchSize = 1000000, iterations = 500, timeUnit = TimeUnit.MICROSECONDS)
 public class HasMapVsConcurrentHashMapPutSingleThreaded {
 
-    private ConcurrentMap<Long, Long> concurrentMap = new ConcurrentHashMap<>(1000000);
+    private ConcurrentMap<Long, Long> concurrentMap;
 
-    private Map<Long, Long> hashMap = new HashMap<>(1000000);
+    private Map<Long, Long> hashMap;
+
+    private TLongLongHashMap tLongLongHashMap;
 
     private long[] data = new long[1000000];
     private int index;
@@ -33,6 +36,16 @@ public class HasMapVsConcurrentHashMapPutSingleThreaded {
     @Setup(Level.Iteration)
     public void setUp() {
         index = 0;
+
+        concurrentMap = new ConcurrentHashMap<>(1000000);
+        hashMap = new HashMap<>(1000000);
+        tLongLongHashMap = new TLongLongHashMap();
+    }
+
+    @TearDown(Level.Iteration)
+    public void end() {
+        int finalSize = concurrentMap.size() + hashMap.size() + tLongLongHashMap.size();
+        assert finalSize == 1000000;
     }
 
     @Benchmark
@@ -43,6 +56,11 @@ public class HasMapVsConcurrentHashMapPutSingleThreaded {
     @Benchmark
     public void testPutHashMap() {
         hashMap.put(data[index++], 1L);
+    }
+
+    @Benchmark
+    public void testPutTLongLongHashMap() {
+        tLongLongHashMap.put(data[index++], 1L);
     }
 
     public static void main(String[] args) {

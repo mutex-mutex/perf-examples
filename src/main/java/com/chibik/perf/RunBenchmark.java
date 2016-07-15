@@ -1,7 +1,5 @@
 package com.chibik.perf;
 
-import com.chibik.perf.string.IsEmptyVsEqualsEmpty;
-import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
@@ -25,8 +23,10 @@ public class RunBenchmark {
                             "-XX:BiasedLockingStartupDelay=0",
                             "-server",
                             "-XX:-TieredCompilation",
-                            "-XX:+PrintSafepointStatistics"
+                            "-XX:+PrintSafepointStatistics",
+                            "-ea"
                     )
+                    .timeUnit(timeUnit)
                     .forks(1)
                     .build();
 
