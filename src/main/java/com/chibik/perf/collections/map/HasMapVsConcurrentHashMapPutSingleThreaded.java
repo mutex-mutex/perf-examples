@@ -10,41 +10,42 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 
-
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.SingleShotTime)
 @Warmup(batchSize = 1000000, iterations = 500, timeUnit = TimeUnit.MICROSECONDS)
 @Measurement(batchSize = 1000000, iterations = 500, timeUnit = TimeUnit.MICROSECONDS)
-public class MapVsConcurrentHashMapSingleThreaded {
+public class HasMapVsConcurrentHashMapPutSingleThreaded {
 
-    private ConcurrentMap<Long, Long> concurrentMap = new ConcurrentHashMap<>();
+    private ConcurrentMap<Long, Long> concurrentMap = new ConcurrentHashMap<>(1000000);
 
-    private Map<Long, Long> hashMap = new HashMap<>();
+    private Map<Long, Long> hashMap = new HashMap<>(1000000);
 
-    private long[] data;
+    private long[] data = new long[1000000];
     private int index;
 
-    @Setup(Level.Iteration)
-    public void setUp() {
-        index = 0;
-        data = new long[1000000];
-        Random r = new Random(50L);
+    {
+        Random r = new Random(30L);
         for(int i = 0; i < data.length; i++) {
             data[i] = r.nextInt(50000000);
         }
     }
 
-    @Benchmark
-    public Object testConcurrentHashMap() {
-        return concurrentMap.put(data[index++], 1L);
+    @Setup(Level.Iteration)
+    public void setUp() {
+        index = 0;
     }
 
     @Benchmark
-    public Object testHashMap() {
-        return hashMap.put(data[index++], 1L);
+    public void testPutConcurrentHashMap() {
+        concurrentMap.put(data[index++], 1L);
+    }
+
+    @Benchmark
+    public void testPutHashMap() {
+        hashMap.put(data[index++], 1L);
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(MapVsConcurrentHashMapSingleThreaded.class);
+        RunBenchmark.runSimple(HasMapVsConcurrentHashMapPutSingleThreaded.class);
     }
 }
