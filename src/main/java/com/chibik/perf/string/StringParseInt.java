@@ -7,7 +7,7 @@ import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 
 @State(Scope.Benchmark)
-public class ParseInt {
+public class StringParseInt {
 
     @Param({"2", "2055", "12342345"})
     private String source;
@@ -18,6 +18,6 @@ public class ParseInt {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(ParseInt.class);
+        RunBenchmark.runSimple(StringParseInt.class);
     }
 }

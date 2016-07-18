@@ -7,7 +7,7 @@ import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 
 @State(Scope.Benchmark)
-public class Trim {
+public class StringTrim {
 
     @Param({"  abcdf ", "  ", "abcdf"})
     private String test;
@@ -18,6 +18,6 @@ public class Trim {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(Trim.class);
+        RunBenchmark.runSimple(StringTrim.class);
     }
 }

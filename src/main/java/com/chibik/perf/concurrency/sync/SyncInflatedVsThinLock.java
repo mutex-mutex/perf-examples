@@ -11,7 +11,7 @@ import static org.openjdk.jmh.annotations.Mode.AverageTime;
 @State(Scope.Benchmark)
 @BenchmarkMode(AverageTime)
 @Measurement(iterations = 5)
-public class SyncFlatedVsThinLock {
+public class SyncInflatedVsThinLock {
 
     /*WARNING: VERY ROUGH TEST*/
 
@@ -87,7 +87,7 @@ public class SyncFlatedVsThinLock {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(SyncFlatedVsThinLock.class);
+        RunBenchmark.runSimple(SyncInflatedVsThinLock.class);
     }
 
     public static class TestEntity {

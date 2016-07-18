@@ -42,8 +42,8 @@ public class StringBufferVsStringBuilderSingleThreaded {
                 .include(StringBufferVsStringBuilderSingleThreaded.class.getSimpleName())
                 .warmupIterations(3)
                 .warmupBatchSize(500000)
-                .measurementIterations(500)
                 .measurementBatchSize(500000)
+                .measurementIterations(500)
                 .threads(1)
                 .jvmArgsAppend(
                         "-Xmx2G",

@@ -6,7 +6,7 @@ import org.openjdk.jmh.runner.RunnerException;
 
 @State(Scope.Benchmark)
 @Threads(value = 1)
-public class IsEmptyVsEqualsEmpty {
+public class StringIsEmptyVsEqualsEmpty {
 
     @Param({"", "a", "abcdef"})
     private String testString;
@@ -25,6 +25,6 @@ public class IsEmptyVsEqualsEmpty {
     }
 
     public static void main(String[] args) throws RunnerException {
-        RunBenchmark.runSimple(IsEmptyVsEqualsEmpty.class);
+        RunBenchmark.runSimple(StringIsEmptyVsEqualsEmpty.class);
     }
 }

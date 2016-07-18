@@ -4,7 +4,7 @@ import com.chibik.perf.RunBenchmark;
 import org.openjdk.jmh.annotations.*;
 
 @State(Scope.Benchmark)
-public class GetBytes {
+public class StringGetBytes {
 
     @Param({"1", "10", "1000"})
     private int strLength;
@@ -31,6 +31,6 @@ public class GetBytes {
 
     public static void main(String[] args) {
 
-        RunBenchmark.runSimple(GetBytes.class);
+        RunBenchmark.runSimple(StringGetBytes.class);
     }
 }

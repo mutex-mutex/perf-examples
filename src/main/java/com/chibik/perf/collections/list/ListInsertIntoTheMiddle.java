@@ -12,8 +12,8 @@ import java.util.concurrent.TimeUnit;
 
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.SingleShotTime)
-@Warmup(batchSize = 1, iterations = 50000, timeUnit = TimeUnit.MICROSECONDS)
-@Measurement(batchSize = 1, iterations = 50000, timeUnit = TimeUnit.MICROSECONDS)
+@Warmup(batchSize = 1, iterations = 1000, timeUnit = TimeUnit.MICROSECONDS)
+@Measurement(batchSize = 1, iterations = 1000, timeUnit = TimeUnit.MICROSECONDS)
 public class ListInsertIntoTheMiddle {
 
     private List<Integer> arrayList;

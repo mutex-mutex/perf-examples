@@ -1,15 +1,12 @@
-package com.chibik.perf.concurrency;
+package com.chibik.perf.concurrency.volatil;
 
 import com.chibik.perf.RunBenchmark;
-import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.OutputTimeUnit;
-import org.openjdk.jmh.annotations.Scope;
-import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.annotations.*;
 
 import java.util.concurrent.TimeUnit;
 
 @State(Scope.Benchmark)
-@OutputTimeUnit(TimeUnit.MILLISECONDS)
+@BenchmarkMode(Mode.AverageTime)
 public class VolatileStoreVsNormalStore {
 
     private volatile long volatileField;
@@ -27,7 +24,7 @@ public class VolatileStoreVsNormalStore {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(VolatileStoreVsNormalStore.class);
+        RunBenchmark.runSimple(VolatileStoreVsNormalStore.class, TimeUnit.NANOSECONDS);
     }
 
 }

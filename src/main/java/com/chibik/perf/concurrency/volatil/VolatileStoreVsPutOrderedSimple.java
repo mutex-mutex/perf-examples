@@ -1,4 +1,4 @@
-package com.chibik.perf.concurrency;
+package com.chibik.perf.concurrency.volatil;
 
 import com.chibik.perf.RunBenchmark;
 import org.openjdk.jmh.annotations.*;
@@ -9,7 +9,8 @@ import java.util.concurrent.TimeUnit;
 import static com.chibik.perf.concurrency.support.UnsafeTool.getUnsafe;
 
 @State(Scope.Benchmark)
-@OutputTimeUnit(TimeUnit.MILLISECONDS)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
 public class VolatileStoreVsPutOrderedSimple {
 
     private static Unsafe u = getUnsafe();
@@ -28,23 +29,19 @@ public class VolatileStoreVsPutOrderedSimple {
     private TestEntity testEntity = new TestEntity();
 
     @Benchmark
-    public long testPutOrderedLong() {
+    public void testPutOrderedLong() {
 
         u.putOrderedLong(testEntity, FIELD_OFFSET, 2);
-
-        return testEntity.getId();
     }
 
     @Benchmark
-    public long testVolatileStore() {
+    public void testVolatileStore() {
 
         testEntity.setId(2);
-
-        return testEntity.getId();
     }
 
     public static void main(String[] args) throws RunnerException {
-        RunBenchmark.runSimple(VolatileStoreVsPutOrderedSimple.class);
+        RunBenchmark.runSimple(VolatileStoreVsPutOrderedSimple.class, TimeUnit.NANOSECONDS);
     }
 
     public static class TestEntity {
