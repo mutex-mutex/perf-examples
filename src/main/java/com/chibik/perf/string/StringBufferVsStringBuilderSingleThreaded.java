@@ -1,4 +1,4 @@
-package com.chibik.perf.collections;
+package com.chibik.perf.string;
 
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.runner.Runner;

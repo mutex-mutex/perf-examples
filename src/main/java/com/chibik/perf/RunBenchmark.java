@@ -16,8 +16,6 @@ public class RunBenchmark {
         try {
             Options opt = new OptionsBuilder()
                     .include(clazz.getSimpleName())
-                    .warmupIterations(10)
-                    .measurementIterations(20)
                     .jvmArgsAppend(
                             "-Xmx2G",
                             "-XX:BiasedLockingStartupDelay=0",

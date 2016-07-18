@@ -1,4 +1,4 @@
-package com.chibik.perf.concurrency;
+package com.chibik.perf.concurrency.locks;
 
 import com.chibik.perf.RunBenchmark;
 import org.openjdk.jmh.annotations.*;
@@ -7,10 +7,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 @State(Scope.Benchmark)
-@Threads(10)
+@Threads(2)
 @BenchmarkMode(Mode.Throughput)
 @Measurement(timeUnit = TimeUnit.SECONDS)
-public class SynchronizedVsReentrantLock {
+public class SynchronizedVsReentrantLockTwoThreads {
 
     private ReentrantLock lock = new ReentrantLock(false);
 
@@ -25,6 +25,7 @@ public class SynchronizedVsReentrantLock {
 
     @Benchmark
     @Group(value = "sync")
+    @GroupThreads(value = 2)
     public long testSynchronized() {
         synchronized (monitor) {
             counter++;
@@ -34,6 +35,7 @@ public class SynchronizedVsReentrantLock {
 
     @Benchmark
     @Group(value = "lock")
+    @GroupThreads(value = 2)
     public long testLocked() throws InterruptedException {
         lock.lock();
         counter++;
@@ -42,6 +44,6 @@ public class SynchronizedVsReentrantLock {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(SynchronizedVsReentrantLock.class);
+        RunBenchmark.runSimple(SynchronizedVsReentrantLockTwoThreads.class);
     }
 }

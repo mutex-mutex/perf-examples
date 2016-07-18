@@ -25,7 +25,7 @@ public class StringTokenizerVsSplit {
     }
 
     @Benchmark
-    public int tokenizer() {
+    public int testTokenizer() {
         StringTokenizer tokenizer = new StringTokenizer(testString, ";");
         int c = 0;
         while(tokenizer.hasMoreTokens()) {

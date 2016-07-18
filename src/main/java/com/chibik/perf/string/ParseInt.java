@@ -13,7 +13,7 @@ public class ParseInt {
     private String source;
 
     @Benchmark
-    public int parseInt() {
+    public int parseIntAvgTime() {
         return Integer.parseInt(source);
     }
 

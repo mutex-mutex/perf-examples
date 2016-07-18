@@ -1,9 +1,13 @@
-package com.chibik.perf.concurrency;
+package com.chibik.perf.concurrency.sync;
 
 import com.chibik.perf.RunBenchmark;
 import org.openjdk.jmh.annotations.*;
 
+import static org.openjdk.jmh.annotations.Mode.AverageTime;
+
 @State(Scope.Benchmark)
+@BenchmarkMode(AverageTime)
+@Measurement(iterations = 10)
 @Threads(2)
 public class HashCodeOnSynchronized {
 
@@ -49,7 +53,7 @@ public class HashCodeOnSynchronized {
         public String s3;
         public String s4;
 
-        /*@Override
+        @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
@@ -60,10 +64,9 @@ public class HashCodeOnSynchronized {
             if (s2 != null ? !s2.equals(that.s2) : that.s2 != null) return false;
             if (s3 != null ? !s3.equals(that.s3) : that.s3 != null) return false;
             return s4 != null ? s4.equals(that.s4) : that.s4 == null;
-
         }
 
-        @Override
+        /*@Override
         public int hashCode() {
             int result = s1 != null ? s1.hashCode() : 0;
             result = 31 * result + (s2 != null ? s2.hashCode() : 0);

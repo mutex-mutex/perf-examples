@@ -24,7 +24,7 @@ public class GetBytes {
     }
 
     @Benchmark
-    public byte[] getBytes() {
+    public byte[] testGetBytes() {
 
         return testString.getBytes();
     }

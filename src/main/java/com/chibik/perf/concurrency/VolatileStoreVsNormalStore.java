@@ -5,7 +5,6 @@ import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
-import org.openjdk.jmh.infra.Blackhole;
 
 import java.util.concurrent.TimeUnit;
 
@@ -13,13 +12,13 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 public class VolatileStoreVsNormalStore {
 
-    private volatile long volatilField;
+    private volatile long volatileField;
 
     private long normalField;
 
     @Benchmark
     public void testVolatileStore() {
-        volatilField = 2L;
+        volatileField = 2L;
     }
 
     @Benchmark

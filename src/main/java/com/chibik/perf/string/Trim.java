@@ -13,7 +13,7 @@ public class Trim {
     private String test;
 
     @Benchmark
-    public String trim() {
+    public String testStringTrimAvgTime() {
         return test.trim();
     }
 

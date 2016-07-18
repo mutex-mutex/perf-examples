@@ -6,7 +6,7 @@ import org.openjdk.jmh.runner.RunnerException;
 import sun.misc.Unsafe;
 import java.util.concurrent.TimeUnit;
 
-import static com.chibik.perf.concurrency.UnsafeTool.getUnsafe;
+import static com.chibik.perf.concurrency.support.UnsafeTool.getUnsafe;
 
 @State(Scope.Benchmark)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)

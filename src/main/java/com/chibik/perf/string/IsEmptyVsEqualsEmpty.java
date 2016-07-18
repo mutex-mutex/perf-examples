@@ -15,12 +15,12 @@ public class IsEmptyVsEqualsEmpty {
     * isEmpty() twice faster
     * */
     @Benchmark
-    public boolean isEmpty() {
+    public boolean testStringIsEmpty() {
         return testString.isEmpty();
     }
 
     @Benchmark
-    public boolean equalsEmptyInternedString() {
+    public boolean testEqualsToEmptyString() {
         return "".equals(testString);
     }
 
