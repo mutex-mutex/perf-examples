@@ -12,9 +12,11 @@ import java.util.concurrent.TimeUnit;
 
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.SingleShotTime)
-@Warmup(batchSize = 1000000, iterations = 500, timeUnit = TimeUnit.MICROSECONDS)
-@Measurement(batchSize = 1000000, iterations = 500, timeUnit = TimeUnit.MICROSECONDS)
+@Warmup(batchSize = ListAdd.BATCH_SIZE, iterations = 40, timeUnit = TimeUnit.MILLISECONDS)
+@Measurement(batchSize = ListAdd.BATCH_SIZE, iterations = 40, timeUnit = TimeUnit.MILLISECONDS)
 public class ListAdd {
+
+    public static final int BATCH_SIZE = 1000000;
 
     private List<Integer> arrayList;
 
@@ -45,6 +47,6 @@ public class ListAdd {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(ListAdd.class, TimeUnit.MICROSECONDS);
+        RunBenchmark.runSimple(ListAdd.class, TimeUnit.MILLISECONDS);
     }
 }

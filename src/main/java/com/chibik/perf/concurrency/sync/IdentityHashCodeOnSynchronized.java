@@ -9,7 +9,7 @@ import static org.openjdk.jmh.annotations.Mode.AverageTime;
 @BenchmarkMode(AverageTime)
 @Measurement(iterations = 10)
 @Threads(2)
-public class HashCodeOnSynchronized {
+public class IdentityHashCodeOnSynchronized {
 
     private TestEntity entity;
 
@@ -44,7 +44,7 @@ public class HashCodeOnSynchronized {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(HashCodeOnSynchronized.class);
+        RunBenchmark.runSimple(IdentityHashCodeOnSynchronized.class);
     }
 
     public static class TestEntity {
