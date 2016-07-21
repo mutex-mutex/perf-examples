@@ -13,9 +13,11 @@ import java.util.concurrent.TimeUnit;
 
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.SingleShotTime)
-@Warmup(batchSize = 1000000, iterations = 500, timeUnit = TimeUnit.MICROSECONDS)
-@Measurement(batchSize = 1000000, iterations = 500, timeUnit = TimeUnit.MICROSECONDS)
+@Warmup(batchSize = HasMapVsConcurrentHashMapPutSingleThreaded.BATCH_SIZE, iterations = 500, timeUnit = TimeUnit.MICROSECONDS)
+@Measurement(batchSize = HasMapVsConcurrentHashMapPutSingleThreaded.BATCH_SIZE, iterations = 500, timeUnit = TimeUnit.MICROSECONDS)
 public class HasMapVsConcurrentHashMapPutSingleThreaded {
+
+    public static final int BATCH_SIZE = 1000000;
 
     private ConcurrentMap<Long, Long> concurrentMap;
 
@@ -45,22 +47,29 @@ public class HasMapVsConcurrentHashMapPutSingleThreaded {
     @TearDown(Level.Iteration)
     public void end() {
         int finalSize = concurrentMap.size() + hashMap.size() + tLongLongHashMap.size();
-        assert finalSize == 1000000;
+        if(finalSize != 990161) {
+            throw new RuntimeException("should be 990161 but was " + 990161);
+        }
     }
 
     @Benchmark
     public void testPutConcurrentHashMap() {
-        concurrentMap.put(data[index++], 1L);
+        concurrentMap.put(data[index], 1L);
     }
 
     @Benchmark
     public void testPutHashMap() {
-        hashMap.put(data[index++], 1L);
+        hashMap.put(data[index], 1L);
     }
 
     @Benchmark
     public void testPutTLongLongHashMap() {
-        tLongLongHashMap.put(data[index++], 1L);
+        tLongLongHashMap.put(data[index], 1L);
+    }
+
+    @TearDown(Level.Invocation)
+    public void inc() {
+        index++;
     }
 
     public static void main(String[] args) {

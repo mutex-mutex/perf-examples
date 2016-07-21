@@ -36,19 +36,6 @@ public class SetAdd {
         tIntHashSet = new TIntHashSet(preallocatedSize);
     }
 
-    @TearDown(Level.Invocation)
-    public void inc() {
-        index++;
-    }
-
-    @TearDown(Level.Iteration)
-    public void validate() {
-        if(hashSet.size() + tIntHashSet.size() + treeSet.size() != BATCH_SIZE) {
-            throw new RuntimeException(
-                    "Invalid iteration!"
-            );
-        }
-    }
 
     @Benchmark
     public void addToHashSet() {
@@ -63,6 +50,21 @@ public class SetAdd {
     @Benchmark
     public void addToTreeSet() {
         treeSet.add(index);
+    }
+
+
+    @TearDown(Level.Invocation)
+    public void inc() {
+        index++;
+    }
+
+    @TearDown(Level.Iteration)
+    public void validate() {
+        if(hashSet.size() + tIntHashSet.size() + treeSet.size() != BATCH_SIZE) {
+            throw new RuntimeException(
+                    "Invalid iteration!"
+            );
+        }
     }
 
     public static void main(String[] args) {

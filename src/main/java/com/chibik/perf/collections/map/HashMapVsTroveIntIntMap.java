@@ -37,15 +37,28 @@ public class HashMapVsTroveIntIntMap {
 
     @Benchmark
     public void putToHashMap() {
-        hashMap.put(data[index++], 1);
+        hashMap.put(data[index], 1);
     }
 
     @Benchmark
     public void putToTIntIntHashMap() {
-        tIntIntHashMap.put(data[index++], 1);
+        tIntIntHashMap.put(data[index], 1);
+    }
+
+    @TearDown(Level.Invocation)
+    public void inc() {
+        index++;
+    }
+
+    @TearDown(Level.Iteration)
+    public void validate() {
+        int sumSize = tIntIntHashMap.size() + hashMap.size();
+        if(sumSize != 990161) {
+            throw new RuntimeException("Expected at least one element but was " + sumSize);
+        }
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(HashMapVsTroveIntIntMap.class);
+        RunBenchmark.runSimple(HashMapVsTroveIntIntMap.class, TimeUnit.MILLISECONDS);
     }
 }

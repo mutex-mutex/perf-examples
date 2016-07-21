@@ -13,9 +13,11 @@ import java.util.concurrent.TimeUnit;
 
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.SingleShotTime)
-@Warmup(batchSize = 1000000, iterations = 500, timeUnit = TimeUnit.MICROSECONDS)
-@Measurement(batchSize = 1000000, iterations = 500, timeUnit = TimeUnit.MICROSECONDS)
+@Warmup(batchSize = HasMapVsConcurrentHashMapGetSingleThreaded.BATCH_SIZE, iterations = 20, timeUnit = TimeUnit.MICROSECONDS)
+@Measurement(batchSize = HasMapVsConcurrentHashMapGetSingleThreaded.BATCH_SIZE, iterations = 20, timeUnit = TimeUnit.MICROSECONDS)
 public class HasMapVsConcurrentHashMapGetSingleThreaded {
+
+    public static final int BATCH_SIZE = 1000000;
 
     private ConcurrentMap<Long, Long> concurrentMap;
 
@@ -23,7 +25,7 @@ public class HasMapVsConcurrentHashMapGetSingleThreaded {
 
     private TLongLongHashMap tLongLongHashMap;
 
-    private long[] data = new long[1000000];
+    private long[] data = new long[BATCH_SIZE];
     private int index;
 
     {
@@ -40,35 +42,42 @@ public class HasMapVsConcurrentHashMapGetSingleThreaded {
         tLongLongHashMap = new TLongLongHashMap();
 
         index = 0;
-        for(int i = 0; i < 1000000; i++) {
+        for(int i = 0; i < data.length; i++) {
             concurrentMap.put(data[i], 1L);
             hashMap.put(data[i], 1L);
             tLongLongHashMap.put(data[i], 1L);
         }
     }
 
-    @TearDown(Level.Iteration)
-    public void end() {
-        int finalSize = concurrentMap.size() + hashMap.size() + tLongLongHashMap.size();
-        assert finalSize == 1000000;
-    }
-
     @Benchmark
     public long testGetConcurrentHashMap() {
-        return concurrentMap.get(data[index++]);
+        return concurrentMap.get(data[index]);
     }
 
     @Benchmark
     public long testGetHashMap() {
-        return hashMap.get(data[index++]);
+        return hashMap.get(data[index]);
     }
 
     @Benchmark
     public long testGetTLongLongHashMap() {
-        return tLongLongHashMap.get(data[index++]);
+        return tLongLongHashMap.get(data[index]);
+    }
+
+    @TearDown(Level.Invocation)
+    public void inc() {
+        index++;
+    }
+
+    @TearDown(Level.Iteration)
+    public void end() {
+        int finalSize = concurrentMap.size() + hashMap.size() + tLongLongHashMap.size();
+        if(finalSize != 2970483) {
+            throw new RuntimeException("should be 990161 but was " + finalSize);
+        }
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(HasMapVsConcurrentHashMapGetSingleThreaded.class);
+        RunBenchmark.runSimple(HasMapVsConcurrentHashMapGetSingleThreaded.class, TimeUnit.MILLISECONDS);
     }
 }
