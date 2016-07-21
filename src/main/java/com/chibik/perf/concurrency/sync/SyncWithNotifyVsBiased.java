@@ -8,7 +8,7 @@ import static org.openjdk.jmh.annotations.Mode.AverageTime;
 @State(Scope.Benchmark)
 @BenchmarkMode(AverageTime)
 @Measurement(iterations = 5)
-public class SyncInflatedVsBiased {
+public class SyncWithNotifyVsBiased {
 
     private TestEntity entity;
     private boolean start;
@@ -41,7 +41,7 @@ public class SyncInflatedVsBiased {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(SyncInflatedVsBiased.class);
+        RunBenchmark.runSimple(SyncWithNotifyVsBiased.class);
     }
 
     public static class TestEntity {

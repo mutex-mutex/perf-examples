@@ -17,7 +17,7 @@ public class RunBenchmark {
             Options opt = new OptionsBuilder()
                     .include(clazz.getSimpleName())
                     .jvmArgsAppend(
-                            "-Xmx2G",
+                            "-Xmx4G",
                             "-XX:BiasedLockingStartupDelay=0",
                             "-server",
                             "-XX:-TieredCompilation",
