@@ -18,6 +18,9 @@ public class ListAdd {
 
     public static final int BATCH_SIZE = 1000000;
 
+    @Param({"16", "" + BATCH_SIZE})
+    private int initialCapacity;
+
     private List<Integer> arrayList;
 
     private List<Integer> linkedList;
@@ -26,9 +29,9 @@ public class ListAdd {
 
     @Setup(Level.Iteration)
     public void setUp() {
-        arrayList = new ArrayList<>();
+        arrayList = new ArrayList<>(initialCapacity);
         linkedList = new LinkedList<>();
-        tIntList = new TIntArrayList();
+        tIntList = new TIntArrayList(initialCapacity);
     }
 
     @Benchmark

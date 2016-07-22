@@ -10,15 +10,15 @@ import java.util.concurrent.TimeUnit;
 
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.SingleShotTime)
-@Warmup(batchSize = 500000, iterations = 500)
-@Measurement(batchSize = 500000, iterations = 500)
+@Warmup(batchSize = 50000, iterations = 500)
+@Measurement(batchSize = 50000, iterations = 500)
 public class StringBufferVsStringBuilderSingleThreaded {
 
-    private StringBuilder builder = new StringBuilder(10000000);
+    private StringBuilder builder = new StringBuilder(5000000);
 
-    private StringBuffer buffer = new StringBuffer(10000000);
+    private StringBuffer buffer = new StringBuffer(5000000);
 
-    @Param({"a", "aaaaa"})
+    @Param({"a", "aaaaa", "aaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"})
     private String addition;
 
     @Setup(Level.Iteration)
@@ -29,12 +29,12 @@ public class StringBufferVsStringBuilderSingleThreaded {
 
     @Benchmark
     public void testBuilderAppend() {
-        builder.append('a');
+        builder.append(addition);
     }
 
     @Benchmark
     public void testBufferAppend() {
-        buffer.append('a');
+        buffer.append(addition);
     }
 
     public static void main(String[] args) throws RunnerException {
