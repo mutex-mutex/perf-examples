@@ -1,7 +1,6 @@
 package com.chibik.perf.collections.map;
 
 import com.chibik.perf.RunBenchmark;
-import gnu.trove.map.hash.TLongLongHashMap;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.HashMap;
@@ -13,9 +12,9 @@ import java.util.concurrent.TimeUnit;
 
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.SingleShotTime)
-@Warmup(batchSize = HasMapVsConcurrentHashMapPutSingleThreaded.BATCH_SIZE, iterations = 500, timeUnit = TimeUnit.MICROSECONDS)
-@Measurement(batchSize = HasMapVsConcurrentHashMapPutSingleThreaded.BATCH_SIZE, iterations = 500, timeUnit = TimeUnit.MICROSECONDS)
-public class HasMapVsConcurrentHashMapPutSingleThreaded {
+@Warmup(batchSize = AnotherMapTest.BATCH_SIZE, iterations = 20, timeUnit = TimeUnit.MICROSECONDS)
+@Measurement(batchSize = AnotherMapTest.BATCH_SIZE, iterations = 20, timeUnit = TimeUnit.MICROSECONDS)
+public class AnotherMapTest {
 
     public static final int BATCH_SIZE = 1000000;
 
@@ -23,10 +22,8 @@ public class HasMapVsConcurrentHashMapPutSingleThreaded {
 
     private Map<Long, Long> hashMap;
 
-    private TLongLongHashMap tLongLongHashMap;
-
     private long[] data = new long[1000000];
-    private int index;
+    private long index;
 
     {
         Random r = new Random(30L);
@@ -41,38 +38,30 @@ public class HasMapVsConcurrentHashMapPutSingleThreaded {
 
         concurrentMap = new ConcurrentHashMap<>(1000000);
         hashMap = new HashMap<>(1000000);
-        tLongLongHashMap = new TLongLongHashMap();
     }
 
     @TearDown(Level.Iteration)
     public void end() {
-        int finalSize = concurrentMap.size() + hashMap.size() + tLongLongHashMap.size();
-        if(finalSize != 990161) {
-            throw new RuntimeException("should be 990161 but was " + 990161);
+        int finalSize = concurrentMap.size() + hashMap.size();
+        if(finalSize != BATCH_SIZE) {
+            throw new RuntimeException("should be " + BATCH_SIZE + " but was " + finalSize);
         }
     }
 
     @Benchmark
     public void testPutConcurrentHashMap() {
-        concurrentMap.put(data[index], 1L);
+        concurrentMap.put(index++, 1L);
     }
 
     @Benchmark
     public void testPutHashMap() {
-        hashMap.put(data[index], 1L);
-    }
-
-    @Benchmark
-    public void testPutTLongLongHashMap() {
-        tLongLongHashMap.put(data[index], 1L);
-    }
-
-    @TearDown(Level.Invocation)
-    public void inc() {
-        index++;
+        hashMap.put(index++, 1L);
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(HasMapVsConcurrentHashMapPutSingleThreaded.class, TimeUnit.MILLISECONDS);
+        RunBenchmark.runSimple(
+                AnotherMapTest.class,
+                TimeUnit.MILLISECONDS
+        );
     }
 }
