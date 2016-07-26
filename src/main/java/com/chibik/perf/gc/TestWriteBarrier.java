@@ -5,12 +5,12 @@ import org.openjdk.jmh.annotations.*;
 
 import java.util.concurrent.TimeUnit;
 
-//TODO: not working
+//TODO: NOT WORKING
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.AverageTime)
 @Warmup(iterations = 4)
 @Measurement(iterations = 4)
-public class TestStoreBarrier {
+public class TestWriteBarrier {
 
     private TestEntity entity;
 
@@ -25,14 +25,14 @@ public class TestStoreBarrier {
 
     }
 
-    @Fork(value = 1, jvmArgs = {"-XX:+NeverTenure", "-XX:+UseConcMarkSweepGC"})
+    @Fork(value = 1, jvmArgs = {"-XX:+NeverTenure", "-XX:+UseConcMarkSweepGC", "-XX:+UseCondCardMark"})
     @Benchmark
     public void updateFromEden() {
 
         entity.s1 = new Object();
     }
 
-    @Fork(value = 1, jvmArgs = {"-XX:+AlwaysTenure", "-XX:+UseConcMarkSweepGC"})
+    @Fork(value = 1, jvmArgs = {"-XX:+AlwaysTenure", "-XX:+UseConcMarkSweepGC", "-XX:+UseCondCardMark"})
     @Benchmark
     public void updateFromOldGen() {
 
@@ -43,8 +43,8 @@ public class TestStoreBarrier {
         public Object s1;
     }
 
-    //-XX:+UnlockDiagnosticVMOptions -XX:+PrintAssembly -XX:CompileCommand=print,*TestStoreBarrier.updateFromEden
+    //-XX:+UnlockDiagnosticVMOptions -XX:+PrintAssembly -XX:CompileCommand=print,*TestWriteBarrier.updateFromEden
     public static void main(String[] args) {
-        RunBenchmark.runSimple(TestStoreBarrier.class, TimeUnit.NANOSECONDS);
+        RunBenchmark.runSimple(TestWriteBarrier.class, TimeUnit.NANOSECONDS);
     }
 }

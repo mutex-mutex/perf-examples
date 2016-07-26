@@ -199,7 +199,7 @@ public class JMHSample_22_FalseSharing {
      *
      * @Contended (since JDK 8):
      *  Uncomment the annotation if building with JDK 8.
-     *  Remember to flip -XX:-RestrictContended to enable.
+     *  Remember to flip -XX:-RestrictContendedTest to enable.
      */
 
     @State(Scope.Group)
