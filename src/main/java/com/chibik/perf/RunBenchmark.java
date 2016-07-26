@@ -2,10 +2,12 @@ package com.chibik.perf;
 
 import org.openjdk.jmh.profile.LinuxPerfAsmProfiler;
 import org.openjdk.jmh.profile.WinPerfAsmProfiler;
+import org.openjdk.jmh.results.RunResult;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
+import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
 public class RunBenchmark {
@@ -27,7 +29,6 @@ public class RunBenchmark {
                             "-XX:BiasedLockingStartupDelay=0",
                             "-server",
                             "-XX:-TieredCompilation",
-                            //"-XX:+PrintSafepointStatistics",
                             "-ea",
                             jvmArgs.length > 0 ? jvmArgs[0] : "-ea"
                     )
@@ -36,9 +37,15 @@ public class RunBenchmark {
                     .forks(1)
                     .build();
 
-            new Runner(opt).run();
+            Collection<RunResult> runResults = new Runner(opt).run();
+
+            printResults(clazz, runResults);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static void printResults(Class<?> clazz, Collection<RunResult> runResults) {
+
     }
 }

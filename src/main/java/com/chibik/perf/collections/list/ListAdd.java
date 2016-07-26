@@ -5,6 +5,7 @@ import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import org.openjdk.jmh.annotations.*;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,11 +28,14 @@ public class ListAdd {
 
     private TIntList tIntList;
 
+    private ByteArrayOutputStream baos;
+
     @Setup(Level.Iteration)
     public void setUp() {
         arrayList = new ArrayList<>(initialCapacity);
         linkedList = new LinkedList<>();
         tIntList = new TIntArrayList(initialCapacity);
+        baos = new ByteArrayOutputStream(initialCapacity);
     }
 
     @Benchmark
@@ -47,6 +51,11 @@ public class ListAdd {
     @Benchmark
     public boolean addToTIntList() {
         return tIntList.add(2);
+    }
+
+    @Benchmark
+    public void addToByteArrayOutputStream() {
+        baos.write((byte) 2);
     }
 
     public static void main(String[] args) {

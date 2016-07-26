@@ -9,21 +9,22 @@ import java.util.concurrent.TimeUnit;
 import static com.chibik.perf.concurrency.support.UnsafeTool.getUnsafe;
 
 @State(Scope.Benchmark)
-@BenchmarkMode(Mode.AverageTime)
+@BenchmarkMode(Mode.SingleShotTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-@Warmup(iterations = 10)
-@Measurement(iterations = 5)
+@Warmup(iterations = 40, batchSize = VolatileStoreVsPutOrderedSimple.BATCH_SIZE)
+@Measurement(iterations = 40, batchSize = VolatileStoreVsPutOrderedSimple.BATCH_SIZE)
 public class VolatileStoreVsPutOrderedSimple {
+
+    public static final int BATCH_SIZE = 10_000_000;
 
     private static Unsafe u = getUnsafe();
 
     private static long VOLATILE_OFFSET;
-    private static long NORMAL_OFFSET;
 
     static {
         try {
+
             VOLATILE_OFFSET = u.objectFieldOffset(TestEntity.class.getDeclaredField("id"));
-            NORMAL_OFFSET = u.objectFieldOffset(TestEntity.class.getDeclaredField("idNormal"));
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
             System.exit(1);
@@ -217,7 +218,7 @@ public class VolatileStoreVsPutOrderedSimple {
     }
 
     public static void main(String[] args) throws RunnerException {
-        RunBenchmark.runSimple(VolatileStoreVsPutOrderedSimple.class, TimeUnit.NANOSECONDS);
+        RunBenchmark.runSimple(VolatileStoreVsPutOrderedSimple.class, TimeUnit.MICROSECONDS );
     }
 
     public static class TestEntity {

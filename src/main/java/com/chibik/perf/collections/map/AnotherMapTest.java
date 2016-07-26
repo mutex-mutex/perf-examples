@@ -23,7 +23,7 @@ public class AnotherMapTest {
     private Map<Long, Long> hashMap;
 
     private long[] data = new long[1000000];
-    private long index;
+    private int index;
 
     {
         Random r = new Random(30L);
@@ -40,22 +40,14 @@ public class AnotherMapTest {
         hashMap = new HashMap<>(1000000);
     }
 
-    @TearDown(Level.Iteration)
-    public void end() {
-        int finalSize = concurrentMap.size() + hashMap.size();
-        if(finalSize != BATCH_SIZE) {
-            throw new RuntimeException("should be " + BATCH_SIZE + " but was " + finalSize);
-        }
-    }
-
     @Benchmark
     public void testPutConcurrentHashMap() {
-        concurrentMap.put(index++, 1L);
+        concurrentMap.put(data[index++], 1L);
     }
 
     @Benchmark
     public void testPutHashMap() {
-        hashMap.put(index++, 1L);
+        hashMap.put(data[index++], 1L);
     }
 
     public static void main(String[] args) {
