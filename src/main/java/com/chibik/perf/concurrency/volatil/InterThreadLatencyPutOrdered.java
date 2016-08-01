@@ -1,7 +1,13 @@
 package com.chibik.perf.concurrency.volatil;
 
 import com.chibik.perf.concurrency.support.UnsafeTool;
+import net.openhft.affinity.Affinity;
+import sun.misc.Contended;
 import sun.misc.Unsafe;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /*
     http://mechanical-sympathy.blogspot.ru/2011/08/inter-thread-latency.html
@@ -20,20 +26,26 @@ public final class InterThreadLatencyPutOrdered {
     static {
         try {
 
-            S1_OFFSET = u.staticFieldOffset(InterThreadLatencyPutOrdered.class.getDeclaredField("s1"));
-            S2_OFFSET = u.staticFieldOffset(InterThreadLatencyPutOrdered.class.getDeclaredField("s2"));
+            S1_OFFSET = u.objectFieldOffset(InterThreadLatencyPutOrdered.class.getDeclaredField("s1"));
+            S2_OFFSET = u.objectFieldOffset(InterThreadLatencyPutOrdered.class.getDeclaredField("s2"));
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
-
     }
 
-    public static volatile long s1;
-    public static volatile long s2;
+    @Contended
+    public volatile long s1;
+    @Contended
+    public volatile long s2;
 
     public static void main(final String[] args)
             throws Exception
     {
+        InterThreadLatencyPutOrdered t = new InterThreadLatencyPutOrdered();
+        t.runAll();
+    }
+
+    public void runAll() throws InterruptedException {
         for (int i = 0; i < 2; i++)
         {
             final long duration = runTest();
@@ -47,7 +59,7 @@ public final class InterThreadLatencyPutOrdered {
         }
     }
 
-    private static long runTest() throws InterruptedException
+    private long runTest() throws InterruptedException
     {
         final Thread pongThread = new Thread(new PongRunner());
         final Thread pingThread = new Thread(new PingRunner());
@@ -60,13 +72,13 @@ public final class InterThreadLatencyPutOrdered {
         return System.nanoTime() - start;
     }
 
-    public static class PingRunner implements Runnable
+    public class PingRunner implements Runnable
     {
         public void run()
         {
             for (int i = 0; i < REPETITIONS; i++)
             {
-                u.putOrderedLong(InterThreadLatencyPutOrdered.class, S1_OFFSET, i);
+                u.putOrderedLong(InterThreadLatencyPutOrdered.this, S1_OFFSET, i);
 
                 while (i != s2)
                 {
@@ -76,7 +88,7 @@ public final class InterThreadLatencyPutOrdered {
         }
     }
 
-    public static class PongRunner implements Runnable
+    public class PongRunner implements Runnable
     {
         public void run()
         {
@@ -87,7 +99,7 @@ public final class InterThreadLatencyPutOrdered {
                     // busy spin
                 }
 
-                u.putOrderedLong(InterThreadLatencyPutOrdered.class, S2_OFFSET, i);
+                u.putOrderedLong(InterThreadLatencyPutOrdered.this, S2_OFFSET, i);
             }
         }
     }

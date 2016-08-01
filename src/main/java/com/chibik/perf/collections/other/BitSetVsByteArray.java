@@ -14,9 +14,9 @@ public class BitSetVsByteArray {
 
     public static final int NBITS = 1_000_000;
 
-    final BitSet bs = new BitSet(NBITS);
+    BitSet bs = new BitSet(NBITS);
 
-    final byte[] bytes = new byte[100000000];
+    byte[] bytes = new byte[100000000];
 
     {
         for (int i = 0; i + i < NBITS; i++) {

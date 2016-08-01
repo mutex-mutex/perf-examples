@@ -1,7 +1,7 @@
 package com.chibik.perf.concurrency.volatil;
 
 import com.chibik.perf.concurrency.support.UnsafeTool;
-import net.openhft.affinity.Affinity;
+import sun.misc.Contended;
 import sun.misc.Unsafe;
 
 import java.util.concurrent.ExecutorService;
@@ -25,20 +25,27 @@ public final class InterThreadLatencyVolatile {
     static {
         try {
 
-            S1_OFFSET = u.staticFieldOffset(InterThreadLatencyVolatile.class.getDeclaredField("s1"));
-            S2_OFFSET = u.staticFieldOffset(InterThreadLatencyVolatile.class.getDeclaredField("s2"));
+            S1_OFFSET = u.objectFieldOffset(InterThreadLatencyVolatile.class.getDeclaredField("s1"));
+            S2_OFFSET = u.objectFieldOffset(InterThreadLatencyVolatile.class.getDeclaredField("s2"));
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
 
     }
 
-    public static volatile long s1;
-    public static volatile long s2;
+    @Contended
+    public volatile long s1;
+    @Contended
+    public volatile long s2;
 
     public static void main(final String[] args)
             throws Exception
     {
+        InterThreadLatencyVolatile t = new InterThreadLatencyVolatile();
+        t.runAll();
+    }
+
+    public void runAll() throws InterruptedException {
         for (int i = 0; i < 2; i++)
         {
             final long duration = runTest();
@@ -52,7 +59,7 @@ public final class InterThreadLatencyVolatile {
         }
     }
 
-    private static long runTest() throws InterruptedException
+    private long runTest() throws InterruptedException
     {
         final Thread pongThread = new Thread(new PongRunner());
         final Thread pingThread = new Thread(new PingRunner());
@@ -65,7 +72,7 @@ public final class InterThreadLatencyVolatile {
         return System.nanoTime() - start;
     }
 
-    public static class PingRunner implements Runnable
+    public class PingRunner implements Runnable
     {
         public void run()
         {
@@ -81,7 +88,7 @@ public final class InterThreadLatencyVolatile {
         }
     }
 
-    public static class PongRunner implements Runnable
+    public class PongRunner implements Runnable
     {
         public void run()
         {
