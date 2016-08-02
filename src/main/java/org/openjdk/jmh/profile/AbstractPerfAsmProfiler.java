@@ -36,10 +36,6 @@ import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import org.openjdk.jmh.infra.BenchmarkParams;
 import org.openjdk.jmh.infra.IterationParams;
-import org.openjdk.jmh.profile.ExternalProfiler;
-import org.openjdk.jmh.profile.ProfilerException;
-import org.openjdk.jmh.profile.ProfilerOptionFormatter;
-import org.openjdk.jmh.profile.ProfilerUtils;
 import org.openjdk.jmh.results.AggregationPolicy;
 import org.openjdk.jmh.results.Aggregator;
 import org.openjdk.jmh.results.BenchmarkResult;
@@ -91,9 +87,93 @@ public abstract class AbstractPerfAsmProfiler implements ExternalProfiler {
             throw new ProfilerException(var29);
         }
 
+        /*
+
+  branch-instructions OR branches                    [Hardware event]
+  branch-misses                                      [Hardware event]
+  bus-cycles                                         [Hardware event]
+  cache-misses                                       [Hardware event]
+  cache-references                                   [Hardware event]
+  cpu-cycles OR cycles                               [Hardware event]
+  instructions                                       [Hardware event]
+  ref-cycles                                         [Hardware event]
+
+  alignment-faults                                   [Software event]
+  bpf-output                                         [Software event]
+  context-switches OR cs                             [Software event]
+  cpu-clock                                          [Software event]
+  cpu-migrations OR migrations                       [Software event]
+  dummy                                              [Software event]
+  emulation-faults                                   [Software event]
+  major-faults                                       [Software event]
+  minor-faults                                       [Software event]
+  page-faults OR faults                              [Software event]
+  task-clock                                         [Software event]
+
+  L1-dcache-load-misses                              [Hardware cache event]
+  L1-dcache-loads                                    [Hardware cache event]
+  L1-dcache-stores                                   [Hardware cache event]
+  L1-icache-load-misses                              [Hardware cache event]
+  LLC-load-misses                                    [Hardware cache event]
+  LLC-loads                                          [Hardware cache event]
+  LLC-store-misses                                   [Hardware cache event]
+  LLC-stores                                         [Hardware cache event]
+  branch-load-misses                                 [Hardware cache event]
+  branch-loads                                       [Hardware cache event]
+  dTLB-load-misses                                   [Hardware cache event]
+  dTLB-loads                                         [Hardware cache event]
+  dTLB-store-misses                                  [Hardware cache event]
+  dTLB-stores                                        [Hardware cache event]
+  iTLB-load-misses                                   [Hardware cache event]
+  iTLB-loads                                         [Hardware cache event]
+  node-load-misses                                   [Hardware cache event]
+  node-loads                                         [Hardware cache event]
+  node-store-misses                                  [Hardware cache event]
+  node-stores                                        [Hardware cache event]
+
+  branch-instructions OR cpu/branch-instructions/    [Kernel PMU event]
+  branch-misses OR cpu/branch-misses/                [Kernel PMU event]
+  bus-cycles OR cpu/bus-cycles/                      [Kernel PMU event]
+  cache-misses OR cpu/cache-misses/                  [Kernel PMU event]
+  cache-references OR cpu/cache-references/          [Kernel PMU event]
+  cpu-cycles OR cpu/cpu-cycles/                      [Kernel PMU event]
+  cstate_core/c3-residency/                          [Kernel PMU event]
+  cstate_core/c6-residency/                          [Kernel PMU event]
+  cstate_core/c7-residency/                          [Kernel PMU event]
+  cstate_pkg/c2-residency/                           [Kernel PMU event]
+  cstate_pkg/c3-residency/                           [Kernel PMU event]
+  cstate_pkg/c6-residency/                           [Kernel PMU event]
+  cstate_pkg/c7-residency/                           [Kernel PMU event]
+  cycles-ct OR cpu/cycles-ct/                        [Kernel PMU event]
+  cycles-t OR cpu/cycles-t/                          [Kernel PMU event]
+  el-abort OR cpu/el-abort/                          [Kernel PMU event]
+
+        */
+
+        events = new String[] {
+                "cycles",
+                "instructions",
+                "cache-references",
+                "cache-misses",
+                "bus-cycles",
+                "L1-dcache-loads",
+                "L1-dcache-load-misses",
+                "L1-dcache-stores",
+                "dTLB-loads",
+                "dTLB-load-misses",
+                "LLC-loads",
+                "LLC-load-misses",
+                "LLC-stores",
+                "branches",
+                "branch-misses",
+                "context-switches",
+                "page-faults"
+        };
+
         OptionParser parser = new OptionParser();
         parser.formatHelpWith(new ProfilerOptionFormatter("perfasm"));
-        ArgumentAcceptingOptionSpec optEvents = parser.accepts("events", "Events to gather.").withRequiredArg().ofType(String.class).withValuesSeparatedBy(",").describedAs("event").defaultsTo(events);
+        ArgumentAcceptingOptionSpec optEvents = parser.accepts("events", "Events to gather.").
+                withRequiredArg().ofType(String.class).withValuesSeparatedBy(",").describedAs("event").defaultsTo(events);
         ArgumentAcceptingOptionSpec optThresholdRate = parser.accepts("hotThreshold", "Cutoff threshold for hot regions. The regions with event count over threshold would be expanded with detailed disassembly.").withRequiredArg().ofType(Double.class).describedAs("rate").defaultsTo(Double.valueOf(0.1D), new Double[0]);
         ArgumentAcceptingOptionSpec optShowTop = parser.accepts("top", "Show this number of top hottest code regions.").withRequiredArg().ofType(Integer.class).describedAs("#").defaultsTo(Integer.valueOf(20), new Integer[0]);
         ArgumentAcceptingOptionSpec optThreshold = parser.accepts("tooBigThreshold", "Cutoff threshold for large region. The region containing more than this number of lines would be truncated.").withRequiredArg().ofType(Integer.class).describedAs("lines").defaultsTo(Integer.valueOf(1000), new Integer[0]);
@@ -121,6 +201,7 @@ public abstract class AbstractPerfAsmProfiler implements ExternalProfiler {
 
         try {
             this.events = this.set.valuesOf(optEvents);
+
             this.regionRateThreshold = ((Double)this.set.valueOf(optThresholdRate)).doubleValue();
             this.regionShowTop = ((Integer)this.set.valueOf(optShowTop)).intValue();
             this.regionTooBigThreshold = ((Integer)this.set.valueOf(optThreshold)).intValue();

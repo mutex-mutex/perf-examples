@@ -142,9 +142,6 @@ public class LinuxPerfAsmProfiler extends AbstractPerfAsmProfiler {
 
             methods.put(Long.valueOf(0L), "<unknown>");
             PerfEvents elems1 = new PerfEvents(this.events, events, methods, libs);
-            for(Map.Entry<String, Multiset<Long>> event : elems1.events.entrySet()) {
-                System.out.println("Perf event: " + event.getKey() + ": " + event.getValue());
-            }
             return elems1;
         } catch (IOException var30) {
             reader = new PerfEvents(this.events);
