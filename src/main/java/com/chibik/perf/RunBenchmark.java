@@ -79,7 +79,9 @@ public class RunBenchmark {
             builder.append(key + "=" + val + "/");
         }
 
-        builder.setLength(builder.length() - 1);
+        if(builder.length() > 0) {
+            builder.setLength(builder.length() - 1);
+        }
         return builder.toString();
     }
 

@@ -9,6 +9,7 @@ import java.util.Date;
 @State(Scope.Benchmark)
 @BenchmarkMode(value = {Mode.AverageTime})
 @Measurement(iterations = 5)
+@SuppressWarnings("unchecked")
 public class GetMonthDateVsLocalDateTime {
 
     private Date d = new Date();
