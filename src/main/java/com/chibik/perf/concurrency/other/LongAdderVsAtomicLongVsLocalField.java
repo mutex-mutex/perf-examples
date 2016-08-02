@@ -1,6 +1,5 @@
 package com.chibik.perf.concurrency.other;
 
-
 import com.chibik.perf.RunBenchmark;
 import org.openjdk.jmh.annotations.*;
 import sun.misc.Contended;

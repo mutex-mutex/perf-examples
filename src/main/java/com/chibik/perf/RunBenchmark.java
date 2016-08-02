@@ -16,8 +16,6 @@ import java.util.concurrent.TimeUnit;
 
 public class RunBenchmark {
 
-    private static Unsafe UNSAFE = UnsafeTool.getUnsafe();
-
     public static void runSimple(Class<?> clazz) {
         runSimple(clazz, TimeUnit.NANOSECONDS);
     }
@@ -40,7 +38,7 @@ public class RunBenchmark {
                     )
                     .addProfiler(LinuxPerfAsmProfiler.class)
                     .timeUnit(timeUnit)
-                    .forks(0)
+                    .forks(1)
                     .build();
 
             Collection<RunResult> runResults = new Runner(opt).run();
@@ -57,21 +55,44 @@ public class RunBenchmark {
             BenchmarkParams params = result.getParams();
 
             if(params.getMode() == Mode.SingleShotTime && hasBatchSize(clazz)) {
-                System.out.printf(
-                        params.getBenchmark() +
-                        ", snapshot time=" + result.getPrimaryResult().getScore() +
-                        ", avg=" + (result.getPrimaryResult().getScore() / getBatchSize(clazz)) +
-                        " " + result.getPrimaryResult().getScoreUnit()
+                System.out.println(
+                        String.format(
+                                "%s/%s, time=%f, avg=%.1f %s, thrput=%.0f op/sec",
+                                params.getBenchmark(),
+                                printParams(params),
+                                result.getPrimaryResult().getScore(),
+                                (result.getPrimaryResult().getScore() / getBatchSize(clazz)),
+                                result.getPrimaryResult().getScoreUnit(),
+                                ((getBatchSize(clazz) / result.getPrimaryResult().getScore()) * 1000 * 1000 * 1000)
+                        )
                 );
             }
 
         }
     }
 
+    private static String printParams(BenchmarkParams params) {
+        StringBuilder builder = new StringBuilder();
+
+        for(String key : params.getParamsKeys()) {
+            String val = params.getParam(key);
+            builder.append(key + "=" + val + "/");
+        }
+
+        builder.setLength(builder.length() - 1);
+        return builder.toString();
+    }
+
     private static boolean hasBatchSize(Class<?> clazz) {
         try {
 
-            return clazz.getDeclaredField("BATCH_SIZE") != null;
+            for(Field field : clazz.getDeclaredFields()) {
+                if(field.getName().equals("BATCH_SIZE")) {
+                    return true;
+                }
+            }
+
+            return hasBatchSize(clazz.getSuperclass());
         } catch (Exception e) {
 
             return false;
@@ -80,16 +101,22 @@ public class RunBenchmark {
 
     private static int getBatchSize(Class<?> clazz) {
         try {
-            Field field = clazz.getDeclaredField("BATCH_SIZE");
-            field.setAccessible(true);
-            return field.getInt(clazz);
+
+            for(Field field : clazz.getDeclaredFields()) {
+                if(field.getName().equals("BATCH_SIZE")) {
+                    field.setAccessible(true);
+                    return field.getInt(clazz);
+                }
+            }
+
+            return getBatchSize(clazz.getSuperclass());
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     public static void main(String[] args) {
-//        System.out.println(hasBatchSize(PassingLatencyVolatile.class));
-//        System.out.println(getBatchSize(PassingLatencyVolatile.class));
+
     }
 }

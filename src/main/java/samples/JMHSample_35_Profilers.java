@@ -194,9 +194,9 @@ public class JMHSample_35_Profilers {
 
             If you look closely at the test, you can get a (correct) hypothesis this is due to Integer autoboxing.
 
-            Note that "gc.alloc" counters generally produce more accurate data, but they can also fail when threads come and
+            Note that "gc.alloc" counters generally produce more accurate entry, but they can also fail when threads come and
             go over the course of the benchmark. "gc.churn" values are updated on each GC event, and so if you want a more accurate
-            data, running longer and/or with small heap would help. But anyhow, always cross-reference "gc.alloc" and "gc.churn"
+            entry, running longer and/or with small heap would help. But anyhow, always cross-reference "gc.alloc" and "gc.churn"
             values with each other to get a complete picture.
 
             It is also worth noticing that non-normalized counters are dependent on benchmark performance! Here, "treemap"
@@ -371,7 +371,7 @@ public class JMHSample_35_Profilers {
             Dealing with nanobenchmarks like these requires looking into the abyss of runtime, hardware, and
             generated code. Luckily, JMH has a few handy tools that ease the pain. If you are running Linux,
             then perf_events are probably available as standard package. This kernel facility taps into
-            hardware counters, and provides the data for user space programs like JMH. Windows has less
+            hardware counters, and provides the entry for user space programs like JMH. Windows has less
             sophisticated facilities, but also usable, see below.
 
             One can simply run "perf stat java -jar ..." to get the first idea how the workload behaves. In
@@ -409,7 +409,7 @@ public class JMHSample_35_Profilers {
                       10.159432892 seconds time elapsed
 
             We can already see this benchmark goes with good IPC, does lots of loads and lots of stores,
-            all of them are more or less fulfilled without misses. The data like this is not handy though:
+            all of them are more or less fulfilled without misses. The entry like this is not handy though:
             you would like to normalize the counters per benchmark op.
 
             This is exactly what -prof perfnorm does:

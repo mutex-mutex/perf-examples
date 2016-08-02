@@ -1,13 +1,8 @@
 package com.chibik.perf.concurrency.volatil;
 
 import com.chibik.perf.concurrency.support.UnsafeTool;
-import net.openhft.affinity.Affinity;
 import sun.misc.Contended;
 import sun.misc.Unsafe;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 /*
     http://mechanical-sympathy.blogspot.ru/2011/08/inter-thread-latency.html

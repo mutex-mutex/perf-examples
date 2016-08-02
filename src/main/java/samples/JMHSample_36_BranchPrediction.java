@@ -50,10 +50,10 @@ import java.util.concurrent.TimeUnit;
 public class JMHSample_36_BranchPrediction {
 
     /*
-     * This sample serves as a warning against regular data sets.
+     * This sample serves as a warning against regular entry sets.
      *
-     * It is very tempting to present a regular data set to benchmark, either due to
-     * naive generation strategy, or just from feeling better about regular data sets.
+     * It is very tempting to present a regular entry set to benchmark, either due to
+     * naive generation strategy, or just from feeling better about regular entry sets.
      * Unfortunately, it frequently backfires: the regular datasets are known to be
      * optimized well by software and hardware. This example exploits one of these
      * optimizations: branch prediction.
