@@ -41,7 +41,7 @@ public abstract class AbstractQueueThroughputOneToOnePerfTest {
     @TearDown(Level.Iteration)
     public void tearDown() {
         int expected = 0;
-        for(int i = 0; i < BATCH_SIZE; i++) {
+        for(int i = 1; i < BATCH_SIZE + 1; i++) {
             expected += 1;
         }
 
@@ -53,7 +53,7 @@ public abstract class AbstractQueueThroughputOneToOnePerfTest {
     @GroupThreads(value = 1)
     @Group("queuetest")
     @Benchmark
-    @Warmup(iterations = 5, batchSize = AbstractQueueThroughputOneToOnePerfTest.BATCH_SIZE)
+    @Warmup(iterations = 15, batchSize = AbstractQueueThroughputOneToOnePerfTest.BATCH_SIZE)
     @Measurement(iterations = 10, batchSize = AbstractQueueThroughputOneToOnePerfTest.BATCH_SIZE)
     @BenchmarkMode(Mode.SingleShotTime)
     public void put() throws InterruptedException {
@@ -64,7 +64,7 @@ public abstract class AbstractQueueThroughputOneToOnePerfTest {
     @GroupThreads(value = 1)
     @Group("queuetest")
     @Benchmark
-    @Warmup(iterations = 5, batchSize = AbstractQueueThroughputOneToOnePerfTest.BATCH_SIZE)
+    @Warmup(iterations = 15, batchSize = AbstractQueueThroughputOneToOnePerfTest.BATCH_SIZE)
     @Measurement(iterations = 10, batchSize = AbstractQueueThroughputOneToOnePerfTest.BATCH_SIZE)
     @BenchmarkMode(Mode.SingleShotTime)
     public int get() throws InterruptedException {
