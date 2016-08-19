@@ -47,7 +47,6 @@ public class LoopUnrollingSum {
         return res;
     }
 
-    //no order dependence, so unroll is easy
     @Benchmark
     public int intArrayUnrolled4() {
         int r1 = 0;
@@ -66,7 +65,6 @@ public class LoopUnrollingSum {
         return res;
     }
 
-    //no order dependence, so unroll is easy
     @Benchmark
     public int intArrayUnrolled8() {
         int r1 = 0;

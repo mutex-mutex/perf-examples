@@ -3,7 +3,13 @@ package com.chibik.perf.string;
 import com.chibik.perf.RunBenchmark;
 import org.openjdk.jmh.annotations.*;
 
+import java.util.concurrent.TimeUnit;
+
 @State(Scope.Benchmark)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@Warmup(iterations = 5)
+@Measurement(iterations = 5)
 public class StringGetBytes {
 
     @Param({"1", "10", "1000"})
@@ -11,7 +17,7 @@ public class StringGetBytes {
 
     private String testString;
 
-    @Setup(Level.Trial)
+    @Setup(Level.Iteration)
     public void setUp() {
         StringBuilder builder = new StringBuilder();
         for(int i = 0; i < strLength; i++) {

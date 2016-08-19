@@ -5,7 +5,6 @@ import org.openjdk.jmh.annotations.*;
 
 import java.util.concurrent.TimeUnit;
 
-//TODO: NOT WORKING
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.AverageTime)
 @Warmup(iterations = 4)
@@ -13,6 +12,8 @@ import java.util.concurrent.TimeUnit;
 public class TestWriteBarrier {
 
     private TestEntity entity;
+
+    //TODO: NOT WORKING
 
     @Setup(Level.Trial)
     public void init() {
@@ -25,14 +26,14 @@ public class TestWriteBarrier {
 
     }
 
-    @Fork(value = 1, jvmArgs = {"-XX:+NeverTenure", "-XX:+UseConcMarkSweepGC", "-XX:+UseCondCardMark"})
+    @Fork(value = 1, jvmArgs = {"-XX:+NeverTenure", "-XX:+UseConcMarkSweepGC"})
     @Benchmark
     public void updateFromEden() {
 
         entity.s1 = new Object();
     }
 
-    @Fork(value = 1, jvmArgs = {"-XX:+AlwaysTenure", "-XX:+UseConcMarkSweepGC", "-XX:+UseCondCardMark"})
+    @Fork(value = 1, jvmArgs = {"-XX:+AlwaysTenure", "-XX:+UseConcMarkSweepGC"})
     @Benchmark
     public void updateFromOldGen() {
 
@@ -45,6 +46,7 @@ public class TestWriteBarrier {
 
     //-XX:+UnlockDiagnosticVMOptions -XX:+PrintAssembly -XX:CompileCommand=print,*TestWriteBarrier.updateFromEden
     public static void main(String[] args) {
+
         RunBenchmark.runSimple(TestWriteBarrier.class, TimeUnit.NANOSECONDS);
     }
 }

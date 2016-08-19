@@ -44,6 +44,7 @@ public class SynchronizedVsReentrantLockFourThreads {
     }
 
     public static void main(String[] args) {
+
         RunBenchmark.runSimple(SynchronizedVsReentrantLockFourThreads.class, TimeUnit.SECONDS);
     }
 }
