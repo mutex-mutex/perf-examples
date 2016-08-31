@@ -16,6 +16,11 @@ public class TypeConversionIntToOthers {
     private int bInt = 3;
 
     @Benchmark
+    public int intToInt() {
+        return (int) aInt;
+    }
+
+    @Benchmark
     public char intToChar() {
         return (char) aInt;
     }
