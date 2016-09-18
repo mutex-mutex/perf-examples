@@ -41,6 +41,11 @@ public class TypeConversionIntToOthers {
     }
 
     @Benchmark
+    public byte intToByte() {
+        return (byte) aInt;
+    }
+
+    @Benchmark
     public double intToDouble() {
         return (double) aInt;
     }
