@@ -36,7 +36,6 @@ public class SetAdd {
         tIntHashSet = new TIntHashSet(preallocatedSize);
     }
 
-
     @Benchmark
     public void addToHashSet() {
         hashSet.add(index);
@@ -51,7 +50,6 @@ public class SetAdd {
     public void addToTreeSet() {
         treeSet.add(index);
     }
-
 
     @TearDown(Level.Invocation)
     public void inc() {
