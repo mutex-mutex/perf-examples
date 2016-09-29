@@ -18,7 +18,7 @@ public class LookupVsBranch {
     private float[] table = new float[]{1f, 2f};
 
     @Benchmark
-    public float testBranch() {
+    public float int01_testBranch() {
         int r = rand.nextInt(2);
         if(r == 0) {
             return 1f;
@@ -28,9 +28,31 @@ public class LookupVsBranch {
     }
 
     @Benchmark
-    public float testLookup() {
+    public float int01_testLookup() {
         int r = rand.nextInt(2);
         return table[r];
+    }
+
+    @Benchmark
+    public float boolean_testBranch() {
+        boolean r = rand.nextBoolean();
+        if(r) {
+            return 1f;
+        } else {
+            return 2f;
+        }
+    }
+
+    @Benchmark
+    public float boolean_testLookup() {
+        boolean r = rand.nextBoolean();
+        return table[Boolean.compare(true, r)];
+    }
+
+    @Benchmark
+    public float boolean_testLookup2() {
+        boolean r = rand.nextBoolean();
+        return table[r ? 1 : 0];
     }
 
     public static void main(String[] args) {
