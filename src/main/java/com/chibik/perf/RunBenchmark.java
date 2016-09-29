@@ -52,9 +52,7 @@ public class RunBenchmark {
                             "-XX:-TieredCompilation",
                             "-ea",
                             jvmArgs.length > 0 ? jvmArgs[0] : "-ea"
-                    )
-                    //.addProfiler(LinuxPerfAsmProfiler.class)
-                    .timeUnit(timeUnit)
+                    )                    .timeUnit(timeUnit)
                     .forks(forks)
                     .build();
 
