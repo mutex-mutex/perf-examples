@@ -23,7 +23,6 @@ public class TestWriteBarrier {
         System.gc();
         System.gc();
         System.gc();
-
     }
 
     @Fork(value = 1, jvmArgs = {"-XX:+NeverTenure", "-XX:+UseConcMarkSweepGC"})
