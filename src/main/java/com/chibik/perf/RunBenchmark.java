@@ -1,14 +1,11 @@
 package com.chibik.perf;
 
-import com.chibik.perf.concurrency.support.UnsafeTool;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.infra.BenchmarkParams;
-import org.openjdk.jmh.profile.LinuxPerfAsmProfiler;
 import org.openjdk.jmh.results.RunResult;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
-import sun.misc.Unsafe;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
@@ -52,9 +49,7 @@ public class RunBenchmark {
                             "-XX:-TieredCompilation",
                             "-ea",
                             jvmArgs.length > 0 ? jvmArgs[0] : "-ea"
-                    )
-//                    .addProfiler(LinuxPerfAsmProfiler.class)
-                    .timeUnit(timeUnit)
+                    )                    .timeUnit(timeUnit)
                     .forks(forks)
                     .build();
 
