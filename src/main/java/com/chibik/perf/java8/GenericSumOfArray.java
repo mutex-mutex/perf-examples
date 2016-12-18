@@ -10,8 +10,8 @@ import java.util.concurrent.TimeUnit;
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @State(Scope.Thread)
-@Warmup(iterations = 5)
-@Measurement(iterations = 5)
+@Warmup(iterations = 1)
+@Measurement(iterations = 2)
 public class GenericSumOfArray {
 
     @Param({ "32768" })
@@ -37,6 +37,7 @@ public class GenericSumOfArray {
         return r;
     }
 
+    /*
     @Benchmark
     public int foreachLoop() {
         int r = 0;
@@ -45,6 +46,7 @@ public class GenericSumOfArray {
         }
         return r;
     }
+    */
 
     @Benchmark
     public int stream() {

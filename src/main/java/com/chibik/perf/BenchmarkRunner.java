@@ -4,6 +4,7 @@ import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.infra.BenchmarkParams;
 import org.openjdk.jmh.results.RunResult;
 import org.openjdk.jmh.runner.Runner;
+import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
@@ -57,6 +58,28 @@ public class BenchmarkRunner {
             printResults(clazz, runResults);
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public Collection<RunResult> runWithStandardOptions() {
+        try {
+
+            Options opt = new OptionsBuilder()
+                    .include("com.chibik.perf.java8.*")
+                    .jvmArgsAppend(
+                            "-Xmx4G",
+                            "-XX:BiasedLockingStartupDelay=0",
+                            "-XX:-TieredCompilation",
+                            "-ea")
+                    .forks(1)
+                    .build();
+
+            Collection<RunResult> runResults = new Runner(opt).run();
+
+            return runResults;
+        } catch (Exception e) {
+
+            throw new RuntimeException("Error while running benchmarks", e);
         }
     }
 
