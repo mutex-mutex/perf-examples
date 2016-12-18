@@ -1,6 +1,6 @@
 package com.chibik.perf.concurrency.sync;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 
 import static org.openjdk.jmh.annotations.Mode.AverageTime;
@@ -41,7 +41,7 @@ public class SyncWithNotifyVsBiased {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(SyncWithNotifyVsBiased.class);
+        BenchmarkRunner.runSimple(SyncWithNotifyVsBiased.class);
     }
 
     public static class TestEntity {

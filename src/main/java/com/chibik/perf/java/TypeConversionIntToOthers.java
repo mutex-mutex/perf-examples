@@ -1,6 +1,6 @@
 package com.chibik.perf.java;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 import java.util.concurrent.TimeUnit;
 
@@ -52,6 +52,6 @@ public class TypeConversionIntToOthers {
 
     public static void main(String[] args) {
 
-        RunBenchmark.runSimple(TypeConversionIntToOthers.class);
+        BenchmarkRunner.runSimple(TypeConversionIntToOthers.class);
     }
 }

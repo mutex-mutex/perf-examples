@@ -1,6 +1,6 @@
 package com.chibik.perf.concurrency.sync;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 
 import static org.openjdk.jmh.annotations.Mode.AverageTime;
@@ -44,7 +44,7 @@ public class IdentityHashCodeOnSynchronized {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(IdentityHashCodeOnSynchronized.class);
+        BenchmarkRunner.runSimple(IdentityHashCodeOnSynchronized.class);
     }
 
     public static class TestEntity {

@@ -1,6 +1,6 @@
 package com.chibik.perf.cpu;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 
 @Warmup(iterations = 5)
@@ -26,6 +26,6 @@ public class MultipleFloatSum {
 
     public static void main(String[] args) {
 
-        RunBenchmark.runSimple(MultipleFloatSum.class);
+        BenchmarkRunner.runSimple(MultipleFloatSum.class);
     }
 }

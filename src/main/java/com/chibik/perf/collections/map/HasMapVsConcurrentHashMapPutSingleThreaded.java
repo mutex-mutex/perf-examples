@@ -1,6 +1,6 @@
 package com.chibik.perf.collections.map;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import gnu.trove.map.hash.TLongLongHashMap;
 import org.openjdk.jmh.annotations.*;
 
@@ -73,6 +73,6 @@ public class HasMapVsConcurrentHashMapPutSingleThreaded {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(HasMapVsConcurrentHashMapPutSingleThreaded.class, TimeUnit.MILLISECONDS);
+        BenchmarkRunner.runSimple(HasMapVsConcurrentHashMapPutSingleThreaded.class, TimeUnit.MILLISECONDS);
     }
 }

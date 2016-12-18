@@ -1,6 +1,6 @@
 package com.chibik.perf.cpu;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 
 @Warmup(iterations = 10, batchSize = 1024 * 1024 - 1)
@@ -32,6 +32,6 @@ public class PostIncVsPreInc {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(PostIncVsPreInc.class);
+        BenchmarkRunner.runSimple(PostIncVsPreInc.class);
     }
 }

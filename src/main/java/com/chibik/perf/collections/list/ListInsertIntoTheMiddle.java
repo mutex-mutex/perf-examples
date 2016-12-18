@@ -1,6 +1,6 @@
 package com.chibik.perf.collections.list;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import org.openjdk.jmh.annotations.*;
@@ -49,6 +49,6 @@ public class ListInsertIntoTheMiddle {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(ListInsertIntoTheMiddle.class, TimeUnit.MICROSECONDS);
+        BenchmarkRunner.runSimple(ListInsertIntoTheMiddle.class, TimeUnit.MICROSECONDS);
     }
 }

@@ -1,6 +1,6 @@
 package com.chibik.perf.concurrency.volatil;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.runner.RunnerException;
 import sun.misc.Unsafe;
@@ -218,7 +218,7 @@ public class VolatileStoreVsPutOrderedSimple {
     }
 
     public static void main(String[] args) throws RunnerException {
-        RunBenchmark.runSimple(VolatileStoreVsPutOrderedSimple.class, TimeUnit.MICROSECONDS );
+        BenchmarkRunner.runSimple(VolatileStoreVsPutOrderedSimple.class, TimeUnit.MICROSECONDS );
     }
 
     public static class TestEntity {

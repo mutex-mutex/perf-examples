@@ -1,6 +1,6 @@
 package com.chibik.perf.string;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Param;
 import org.openjdk.jmh.annotations.Scope;
@@ -18,6 +18,6 @@ public class StringParseInt {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(StringParseInt.class);
+        BenchmarkRunner.runSimple(StringParseInt.class);
     }
 }

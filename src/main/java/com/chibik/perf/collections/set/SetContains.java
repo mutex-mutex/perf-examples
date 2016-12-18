@@ -1,6 +1,6 @@
 package com.chibik.perf.collections.set;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import gnu.trove.set.hash.TIntHashSet;
 import org.openjdk.jmh.annotations.*;
 
@@ -69,6 +69,6 @@ public class SetContains {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(SetContains.class, TimeUnit.MILLISECONDS);
+        BenchmarkRunner.runSimple(SetContains.class, TimeUnit.MILLISECONDS);
     }
 }

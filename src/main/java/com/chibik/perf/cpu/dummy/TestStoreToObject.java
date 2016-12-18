@@ -1,6 +1,6 @@
 package com.chibik.perf.cpu.dummy;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.concurrent.TimeUnit;
@@ -61,6 +61,6 @@ public class TestStoreToObject {
 
     public static void main(String[] args) {
 
-        RunBenchmark.runSimple(TestStoreToObject.class);
+        BenchmarkRunner.runSimple(TestStoreToObject.class);
     }
 }

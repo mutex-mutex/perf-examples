@@ -1,6 +1,6 @@
 package com.chibik.perf.collections.map;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.openjdk.jmh.annotations.*;
 
@@ -59,6 +59,6 @@ public class HashMapVsTroveIntIntMap {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(HashMapVsTroveIntIntMap.class, TimeUnit.MILLISECONDS);
+        BenchmarkRunner.runSimple(HashMapVsTroveIntIntMap.class, TimeUnit.MILLISECONDS);
     }
 }

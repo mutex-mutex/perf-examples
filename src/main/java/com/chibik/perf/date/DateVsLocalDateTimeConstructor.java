@@ -1,6 +1,6 @@
 package com.chibik.perf.date;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 
 import java.time.LocalDateTime;
@@ -39,6 +39,6 @@ public class DateVsLocalDateTimeConstructor {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(DateVsLocalDateTimeConstructor.class);
+        BenchmarkRunner.runSimple(DateVsLocalDateTimeConstructor.class);
     }
 }

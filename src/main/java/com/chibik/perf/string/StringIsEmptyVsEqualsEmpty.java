@@ -1,6 +1,6 @@
 package com.chibik.perf.string;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.runner.RunnerException;
 
@@ -25,6 +25,6 @@ public class StringIsEmptyVsEqualsEmpty {
     }
 
     public static void main(String[] args) throws RunnerException {
-        RunBenchmark.runSimple(StringIsEmptyVsEqualsEmpty.class);
+        BenchmarkRunner.runSimple(StringIsEmptyVsEqualsEmpty.class);
     }
 }

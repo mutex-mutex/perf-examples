@@ -1,6 +1,6 @@
 package com.chibik.perf.java.array;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 import sun.misc.Contended;
 
@@ -42,6 +42,6 @@ public class ArraysFillVsLoopFill {
 
     public static void main(String[] args) {
 
-        RunBenchmark.runSimple(ArraysFillVsLoopFill.class, TimeUnit.NANOSECONDS);
+        BenchmarkRunner.runSimple(ArraysFillVsLoopFill.class, TimeUnit.NANOSECONDS);
     }
 }

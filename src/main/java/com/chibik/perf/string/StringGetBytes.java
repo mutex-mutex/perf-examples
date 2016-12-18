@@ -1,26 +1,25 @@
 package com.chibik.perf.string;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.concurrent.TimeUnit;
 
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
-@Warmup(iterations = 5)
-@Measurement(iterations = 5)
+@Warmup(iterations = 5, timeUnit = TimeUnit.NANOSECONDS)
+@Measurement(iterations = 5, timeUnit = TimeUnit.NANOSECONDS)
 public class StringGetBytes {
 
     @Param({"1", "10", "1000"})
-    private int strLength;
+    private int stringLength;
 
     private String testString;
 
     @Setup(Level.Iteration)
     public void setUp() {
         StringBuilder builder = new StringBuilder();
-        for(int i = 0; i < strLength; i++) {
+        for(int i = 0; i < stringLength; i++) {
             builder.append("a");
             if(i % 10 == 0) {
                 builder.append(";");
@@ -37,6 +36,6 @@ public class StringGetBytes {
 
     public static void main(String[] args) {
 
-        RunBenchmark.runSimple(StringGetBytes.class);
+        BenchmarkRunner.runSimple(StringGetBytes.class);
     }
 }

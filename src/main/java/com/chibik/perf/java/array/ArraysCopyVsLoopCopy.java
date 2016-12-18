@@ -1,6 +1,6 @@
 package com.chibik.perf.java.array;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 import sun.misc.Contended;
 
@@ -44,6 +44,6 @@ public class ArraysCopyVsLoopCopy {
 
     public static void main(String[] args) {
 
-        RunBenchmark.runSimple(ArraysCopyVsLoopCopy.class);
+        BenchmarkRunner.runSimple(ArraysCopyVsLoopCopy.class);
     }
 }

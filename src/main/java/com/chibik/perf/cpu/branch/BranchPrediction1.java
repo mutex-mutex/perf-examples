@@ -1,6 +1,6 @@
 package com.chibik.perf.cpu.branch;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 import sun.misc.Contended;
 
@@ -89,6 +89,6 @@ public class BranchPrediction1 {
 
     public static void main(String[] args) {
 
-        RunBenchmark.runSimple(BranchPrediction1.class);
+        BenchmarkRunner.runSimple(BranchPrediction1.class);
     }
 }

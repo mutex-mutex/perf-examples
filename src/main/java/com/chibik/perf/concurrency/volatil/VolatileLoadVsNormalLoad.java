@@ -1,6 +1,6 @@
 package com.chibik.perf.concurrency.volatil;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 import sun.misc.Contended;
 
@@ -38,7 +38,7 @@ public class VolatileLoadVsNormalLoad {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(VolatileLoadVsNormalLoad.class);
+        BenchmarkRunner.runSimple(VolatileLoadVsNormalLoad.class);
     }
 
 }

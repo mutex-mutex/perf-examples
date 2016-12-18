@@ -1,6 +1,6 @@
 package com.chibik.perf.cpu;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -57,6 +57,6 @@ public class LookupVsBranch {
 
     public static void main(String[] args) {
 
-        RunBenchmark.runSimple(LookupVsBranch.class);
+        BenchmarkRunner.runSimple(LookupVsBranch.class);
     }
 }

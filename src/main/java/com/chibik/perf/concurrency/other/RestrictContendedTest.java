@@ -1,6 +1,6 @@
 package com.chibik.perf.concurrency.other;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 import sun.misc.Contended;
 
@@ -76,6 +76,6 @@ public class RestrictContendedTest {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(RestrictContendedTest.class, TimeUnit.NANOSECONDS);
+        BenchmarkRunner.runSimple(RestrictContendedTest.class, TimeUnit.NANOSECONDS);
     }
 }

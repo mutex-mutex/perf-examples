@@ -1,6 +1,6 @@
 package com.chibik.perf.concurrency;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.concurrent.TimeUnit;
@@ -23,6 +23,6 @@ public class ThreadYield {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(ThreadYield.class);
+        BenchmarkRunner.runSimple(ThreadYield.class);
     }
 }

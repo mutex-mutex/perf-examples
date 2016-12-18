@@ -3,7 +3,6 @@ package com.chibik.perf;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
 
 //-XX:+UnlockDiagnosticVMOptions -XX:CompileCommand=print,*EmptyAsm.load -XX:-TieredCompilation -XX:BiasedLockingStartupDelay=0 -server
 
@@ -27,7 +26,7 @@ public class EmptyAsm {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runNoFork(EmptyAsm.class, TimeUnit.MILLISECONDS);
+        BenchmarkRunner.runNoFork(EmptyAsm.class, TimeUnit.MILLISECONDS);
     }
 
 }

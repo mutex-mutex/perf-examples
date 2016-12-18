@@ -1,6 +1,6 @@
 package com.chibik.perf.cpu.dummy;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 import sun.misc.Contended;
 
@@ -61,6 +61,6 @@ public class TestSumOfArray {
 
     public static void main(String[] args) {
 
-        RunBenchmark.runSimple(TestSumOfArray.class);
+        BenchmarkRunner.runSimple(TestSumOfArray.class);
     }
 }

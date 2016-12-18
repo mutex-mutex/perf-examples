@@ -1,6 +1,6 @@
 package com.chibik.perf.concurrency.sync;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Control;
 
@@ -87,7 +87,7 @@ public class SyncInflatedVsThinLock {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(SyncInflatedVsThinLock.class);
+        BenchmarkRunner.runSimple(SyncInflatedVsThinLock.class);
     }
 
     public static class TestEntity {

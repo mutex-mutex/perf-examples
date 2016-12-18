@@ -1,6 +1,6 @@
 package com.chibik.perf.java;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 import sun.misc.Contended;
 
@@ -59,6 +59,6 @@ public class IntVsCharArraySum {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(IntVsCharArraySum.class);
+        BenchmarkRunner.runSimple(IntVsCharArraySum.class);
     }
 }

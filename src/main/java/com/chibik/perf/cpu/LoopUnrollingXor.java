@@ -1,6 +1,6 @@
 package com.chibik.perf.cpu;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 import sun.misc.Contended;
 
@@ -93,6 +93,6 @@ public class LoopUnrollingXor {
 
     public static void main(String[] args) {
 
-        RunBenchmark.runSimple(LoopUnrollingXor.class);
+        BenchmarkRunner.runSimple(LoopUnrollingXor.class);
     }
 }

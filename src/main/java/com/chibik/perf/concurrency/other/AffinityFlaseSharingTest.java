@@ -1,6 +1,6 @@
 package com.chibik.perf.concurrency.other;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import net.openhft.affinity.Affinity;
 import org.openjdk.jmh.annotations.*;
 import sun.misc.Contended;
@@ -131,6 +131,6 @@ public class AffinityFlaseSharingTest {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(AffinityFlaseSharingTest.class, TimeUnit.MICROSECONDS);
+        BenchmarkRunner.runSimple(AffinityFlaseSharingTest.class, TimeUnit.MICROSECONDS);
     }
 }

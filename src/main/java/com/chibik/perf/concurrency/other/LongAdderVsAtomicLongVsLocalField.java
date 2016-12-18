@@ -1,6 +1,6 @@
 package com.chibik.perf.concurrency.other;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 import sun.misc.Contended;
 
@@ -73,6 +73,6 @@ public class LongAdderVsAtomicLongVsLocalField {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(LongAdderVsAtomicLongVsLocalField.class, TimeUnit.NANOSECONDS);
+        BenchmarkRunner.runSimple(LongAdderVsAtomicLongVsLocalField.class, TimeUnit.NANOSECONDS);
     }
 }

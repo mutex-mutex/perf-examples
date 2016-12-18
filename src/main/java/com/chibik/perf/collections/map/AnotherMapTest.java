@@ -1,6 +1,6 @@
 package com.chibik.perf.collections.map;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.HashMap;
@@ -51,7 +51,7 @@ public class AnotherMapTest {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(
+        BenchmarkRunner.runSimple(
                 AnotherMapTest.class,
                 TimeUnit.MILLISECONDS
         );

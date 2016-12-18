@@ -1,6 +1,6 @@
 package com.chibik.perf.collections.other;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.BitSet;
@@ -46,6 +46,6 @@ public class BitSetVsByteArray {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(BitSetVsByteArray.class, TimeUnit.NANOSECONDS);
+        BenchmarkRunner.runSimple(BitSetVsByteArray.class, TimeUnit.NANOSECONDS);
     }
 }

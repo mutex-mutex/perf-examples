@@ -1,6 +1,6 @@
 package com.chibik.perf.java8;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 import sun.misc.Contended;
 
@@ -53,6 +53,6 @@ public class GenericSumOfArray {
 
     public static void main(String[] args) {
 
-        RunBenchmark.runSimple(GenericSumOfArray.class);
+        BenchmarkRunner.runSimple(GenericSumOfArray.class);
     }
 }

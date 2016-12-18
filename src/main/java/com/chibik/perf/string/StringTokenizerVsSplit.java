@@ -1,6 +1,6 @@
 package com.chibik.perf.string;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
@@ -42,6 +42,6 @@ public class StringTokenizerVsSplit {
 
     public static void main(String[] args) {
 
-        RunBenchmark.runSimple(StringTokenizerVsSplit.class, TimeUnit.MICROSECONDS);
+        BenchmarkRunner.runSimple(StringTokenizerVsSplit.class, TimeUnit.MICROSECONDS);
     }
 }

@@ -1,6 +1,6 @@
 package com.chibik.perf.concurrency.queue;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.Param;
 
 import java.lang.reflect.Constructor;
@@ -49,6 +49,6 @@ public class TestAllQueuesSPSC extends AbstractQueueThroughputOneToOnePerfTest {
 
     public static void main(String[] args) {
 
-        RunBenchmark.runSimple(TestAllQueuesSPSC.class, TimeUnit.NANOSECONDS);
+        BenchmarkRunner.runSimple(TestAllQueuesSPSC.class, TimeUnit.NANOSECONDS);
     }
 }

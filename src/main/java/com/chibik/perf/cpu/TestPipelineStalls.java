@@ -1,6 +1,6 @@
 package com.chibik.perf.cpu;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.concurrent.TimeUnit;
@@ -109,6 +109,6 @@ com.chibik.perf.cpu.TestPipelineStalls.computeWithNoDependencies/, time=353107.4
     //-XX:+UnlockDiagnosticVMOptions -XX:CompileCommand=print,*TestPipelineStalls.computeWithDependencies  -XX:CompileCommand=print,*TestPipelineStalls.computeWithNoDependencies
     public static void main(String[] args) {
 
-        RunBenchmark.runSimple(TestPipelineStalls.class, TimeUnit.NANOSECONDS);
+        BenchmarkRunner.runSimple(TestPipelineStalls.class, TimeUnit.NANOSECONDS);
     }
 }

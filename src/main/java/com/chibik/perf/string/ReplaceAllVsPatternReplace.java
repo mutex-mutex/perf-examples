@@ -1,6 +1,6 @@
 package com.chibik.perf.string;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.concurrent.TimeUnit;
@@ -14,13 +14,25 @@ import java.util.regex.Pattern;
 @Measurement(iterations = 5)
 public class ReplaceAllVsPatternReplace {
 
-    private final String str = "ABCDEFGH";
+    @Param("ABCDEFGH")
+    private String str;
+
+    @Param("DEF")
+    private String replaceWhat;
+
+    @Param("DEA")
+    private String replaceTo;
 
     private String result;
 
-    private Pattern pattern = Pattern.compile("DEF");
+    private Pattern pattern;
 
     private StringBuilder builder = new StringBuilder(1000);
+
+    @Setup(Level.Iteration)
+    public void setUp() {
+        pattern = Pattern.compile(replaceWhat);
+    }
 
     @TearDown(Level.Iteration)
     public void validate() {
@@ -31,30 +43,32 @@ public class ReplaceAllVsPatternReplace {
 
     @Benchmark
     public String testReplaceAll() {
-        result = str.replaceAll("DEF", "DEA");
+        result = str.replaceAll(replaceWhat, replaceTo);
         return result;
     }
 
     @Benchmark
     public String testReplaceWithPattern() {
         Matcher matcher = pattern.matcher(str);
-        result = matcher.replaceAll("DEA");
+        result = matcher.replaceAll(replaceTo);
         return result;
     }
 
     @Benchmark
     public String testReplaceWithIndexOf() {
-        int index = str.indexOf("DEF");
-        result = str.substring(0, index) + "DEA" + str.substring(index + 3);
+        int index = str.indexOf(replaceWhat);
+        if(index != -1) {
+            result = str.substring(0, index) + replaceTo + str.substring(index + 3);
+        }
         return result;
     }
 
     @Benchmark
     public String testReplaceWithIndexOfWithReusabelBuilder() {
         builder.setLength(0);
-        int index = str.indexOf("DEF");
+        int index = str.indexOf(replaceWhat);
         builder.append(str, 0, index);
-        builder.append("DEA", 0, 3);
+        builder.append(replaceTo, 0, 3);
         builder.append(str, index + 3, str.length());
         result = builder.toString();
         return result;
@@ -62,6 +76,6 @@ public class ReplaceAllVsPatternReplace {
 
     public static void main(String[] args) {
 
-        RunBenchmark.runSimple(ReplaceAllVsPatternReplace.class);
+        BenchmarkRunner.runSimple(ReplaceAllVsPatternReplace.class);
     }
 }

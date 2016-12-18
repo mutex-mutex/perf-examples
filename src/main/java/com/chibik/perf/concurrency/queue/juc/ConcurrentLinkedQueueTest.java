@@ -1,6 +1,6 @@
 package com.chibik.perf.concurrency.queue.juc;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import com.chibik.perf.concurrency.queue.AbstractQueueThroughputOneToOnePerfTest;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -28,6 +28,6 @@ public class ConcurrentLinkedQueueTest extends AbstractQueueThroughputOneToOnePe
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(ConcurrentLinkedQueueTest.class, TimeUnit.NANOSECONDS);
+        BenchmarkRunner.runSimple(ConcurrentLinkedQueueTest.class, TimeUnit.NANOSECONDS);
     }
 }

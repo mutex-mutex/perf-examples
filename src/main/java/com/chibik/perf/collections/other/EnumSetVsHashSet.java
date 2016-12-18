@@ -1,6 +1,6 @@
 package com.chibik.perf.collections.other;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.EnumSet;
@@ -44,7 +44,7 @@ public class EnumSetVsHashSet {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(EnumSetVsHashSet.class, TimeUnit.MICROSECONDS);
+        BenchmarkRunner.runSimple(EnumSetVsHashSet.class, TimeUnit.MICROSECONDS);
     }
 
     public enum TestEnum {

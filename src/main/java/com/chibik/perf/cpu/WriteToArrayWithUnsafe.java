@@ -1,6 +1,6 @@
 package com.chibik.perf.cpu;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import com.chibik.perf.concurrency.support.UnsafeTool;
 import org.openjdk.jmh.annotations.*;
 import sun.misc.Unsafe;
@@ -149,6 +149,6 @@ public class WriteToArrayWithUnsafe {
     //-XX:+UnlockDiagnosticVMOptions -XX:CompileCommand=print,*WriteToArrayWithUnsafe.writeSeqWithUnsafe
     public static void main(String[] args) {
 
-        RunBenchmark.runNoFork(WriteToArrayWithUnsafe.class, TimeUnit.NANOSECONDS);
+        BenchmarkRunner.runNoFork(WriteToArrayWithUnsafe.class, TimeUnit.NANOSECONDS);
     }
 }

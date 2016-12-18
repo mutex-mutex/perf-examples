@@ -1,9 +1,8 @@
 package com.chibik.perf.concurrency.volatil;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import com.chibik.perf.concurrency.support.UnsafeTool;
 import org.openjdk.jmh.annotations.*;
-import sun.misc.Contended;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
@@ -56,7 +55,7 @@ public class CasVsIncrement {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runNoFork(CasVsIncrement.class, TimeUnit.MILLISECONDS);
+        BenchmarkRunner.runNoFork(CasVsIncrement.class, TimeUnit.MILLISECONDS);
     }
 
 }

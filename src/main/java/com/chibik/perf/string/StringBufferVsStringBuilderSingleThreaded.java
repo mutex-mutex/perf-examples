@@ -1,17 +1,14 @@
 package com.chibik.perf.string;
 
 import org.openjdk.jmh.annotations.*;
-import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
-import org.openjdk.jmh.runner.options.Options;
-import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import java.util.concurrent.TimeUnit;
 
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.SingleShotTime)
-@Warmup(batchSize = 50000, iterations = 500)
-@Measurement(batchSize = 50000, iterations = 500)
+@Warmup(batchSize = 500000, iterations = 3, timeUnit = TimeUnit.MICROSECONDS)
+@Measurement(batchSize = 500000, iterations = 500, timeUnit = TimeUnit.MICROSECONDS)
 public class StringBufferVsStringBuilderSingleThreaded {
 
     private StringBuilder builder = new StringBuilder(5000000);
@@ -19,7 +16,7 @@ public class StringBufferVsStringBuilderSingleThreaded {
     private StringBuffer buffer = new StringBuffer(5000000);
 
     @Param({"a", "aaaaa", "aaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"})
-    private String addition;
+    private String appendable;
 
     @Setup(Level.Iteration)
     public void setUp() {
@@ -28,35 +25,16 @@ public class StringBufferVsStringBuilderSingleThreaded {
     }
 
     @Benchmark
-    public void testBuilderAppend() {
-        builder.append(addition);
+    public void appendToStringBuilder() {
+        builder.append(appendable);
     }
 
     @Benchmark
-    public void testBufferAppend() {
-        buffer.append(addition);
+    public void appendToStringBuffer() {
+        buffer.append(appendable);
     }
 
     public static void main(String[] args) throws RunnerException {
-        Options opt = new OptionsBuilder()
-                .include(StringBufferVsStringBuilderSingleThreaded.class.getSimpleName())
-                .warmupIterations(3)
-                .warmupBatchSize(500000)
-                .measurementBatchSize(500000)
-                .measurementIterations(500)
-                .threads(1)
-                .jvmArgsAppend(
-                        "-Xmx2G",
-                        "-XX:BiasedLockingStartupDelay=0",
-                        "-server",
-                        "-XX:-TieredCompilation",
-                        "-XX:+PrintSafepointStatistics"
-                )
-                .forks(1)
-                .mode(Mode.SingleShotTime)
-                .timeUnit(TimeUnit.MICROSECONDS)
-                .build();
 
-        new Runner(opt).run();
     }
 }

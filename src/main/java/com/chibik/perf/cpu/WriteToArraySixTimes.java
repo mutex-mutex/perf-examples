@@ -1,6 +1,6 @@
 package com.chibik.perf.cpu;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.concurrent.TimeUnit;
@@ -52,6 +52,6 @@ public class WriteToArraySixTimes {
     // -XX:-TieredCompilation -XX:+UnlockDiagnosticVMOptions -XX:CompileCommand=print,*WriteToArraySixTimes.writeSeq -XX:CompileCommand=print,*WriteToArraySixTimes.writeReverseSeq -XX:CompileCommand=print,*WriteToArraySixTimes.writeNonPredictableStyle
     public static void main(String[] args) {
 
-        RunBenchmark.runNoFork(WriteToArraySixTimes.class, TimeUnit.NANOSECONDS);
+        BenchmarkRunner.runNoFork(WriteToArraySixTimes.class, TimeUnit.NANOSECONDS);
     }
 }

@@ -1,6 +1,6 @@
 package com.chibik.perf.concurrency.queue.juc;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import com.chibik.perf.concurrency.queue.AbstractQueueThroughputOneToOnePerfTest;
 
 import java.util.concurrent.ArrayBlockingQueue;
@@ -26,6 +26,6 @@ public class ABQTest extends AbstractQueueThroughputOneToOnePerfTest {
     }
 
     public static void main(String[] args) {
-        RunBenchmark.runSimple(ABQTest.class, TimeUnit.NANOSECONDS);
+        BenchmarkRunner.runSimple(ABQTest.class, TimeUnit.NANOSECONDS);
     }
 }

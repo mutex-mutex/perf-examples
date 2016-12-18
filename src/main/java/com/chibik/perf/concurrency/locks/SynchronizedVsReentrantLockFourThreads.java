@@ -1,6 +1,6 @@
 package com.chibik.perf.concurrency.locks;
 
-import com.chibik.perf.RunBenchmark;
+import com.chibik.perf.BenchmarkRunner;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.concurrent.TimeUnit;
@@ -45,6 +45,6 @@ public class SynchronizedVsReentrantLockFourThreads {
 
     public static void main(String[] args) {
 
-        RunBenchmark.runSimple(SynchronizedVsReentrantLockFourThreads.class, TimeUnit.SECONDS);
+        BenchmarkRunner.runSimple(SynchronizedVsReentrantLockFourThreads.class, TimeUnit.SECONDS);
     }
 }
