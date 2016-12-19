@@ -1,6 +1,7 @@
 package com.chibik.perf.java8;
 
 import com.chibik.perf.BenchmarkRunner;
+import com.chibik.perf.util.Comment;
 import org.openjdk.jmh.annotations.*;
 import sun.misc.Contended;
 
@@ -8,10 +9,11 @@ import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@OutputTimeUnit(TimeUnit.MILLISECONDS)
 @State(Scope.Thread)
 @Warmup(iterations = 1)
 @Measurement(iterations = 2)
+@Comment("Fill an array of pseudo random numbers from 0 to 255 and compute a sum")
 public class GenericSumOfArray {
 
     @Param({ "32768" })
@@ -37,7 +39,6 @@ public class GenericSumOfArray {
         return r;
     }
 
-    /*
     @Benchmark
     public int foreachLoop() {
         int r = 0;
@@ -46,7 +47,6 @@ public class GenericSumOfArray {
         }
         return r;
     }
-    */
 
     @Benchmark
     public int stream() {

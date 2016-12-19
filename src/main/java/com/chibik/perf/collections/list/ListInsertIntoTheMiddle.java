@@ -12,8 +12,9 @@ import java.util.concurrent.TimeUnit;
 
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.SingleShotTime)
-@Warmup(batchSize = 1, iterations = 1000, timeUnit = TimeUnit.MICROSECONDS)
-@Measurement(batchSize = 1, iterations = 1000, timeUnit = TimeUnit.MICROSECONDS)
+@OutputTimeUnit(TimeUnit.MILLISECONDS)
+@Warmup(batchSize = 1, iterations = 1000)
+@Measurement(batchSize = 1, iterations = 1000)
 public class ListInsertIntoTheMiddle {
 
     private List<Integer> arrayList;
@@ -39,12 +40,12 @@ public class ListInsertIntoTheMiddle {
     }
 
     @Benchmark
-    public void addToArrayListAtTheMiddle() {
+    public void arrayList() {
         arrayList.add(length/2, 2);
     }
 
     @Benchmark
-    public void addToLinkedListAtTheMiddle() {
+    public void linkedList() {
         linkedList.add(length/2, 2);
     }
 

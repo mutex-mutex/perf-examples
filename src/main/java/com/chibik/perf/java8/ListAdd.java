@@ -1,6 +1,8 @@
 package com.chibik.perf.java8;
 
 import com.chibik.perf.BenchmarkRunner;
+import com.chibik.perf.util.Comment;
+import com.chibik.perf.util.ReportIncluded;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import org.openjdk.jmh.annotations.*;
@@ -13,8 +15,10 @@ import java.util.concurrent.TimeUnit;
 
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.SingleShotTime)
-@Warmup(batchSize = ListAdd.BATCH_SIZE, iterations = 1, timeUnit = TimeUnit.MILLISECONDS)
-@Measurement(batchSize = ListAdd.BATCH_SIZE, iterations = 2, timeUnit = TimeUnit.MILLISECONDS)
+@OutputTimeUnit(TimeUnit.MILLISECONDS)
+@Warmup(batchSize = ListAdd.BATCH_SIZE, iterations = 1)
+@Measurement(batchSize = ListAdd.BATCH_SIZE, iterations = 2)
+@ReportIncluded
 public class ListAdd {
 
     public static final int BATCH_SIZE = 1000000;
@@ -54,6 +58,7 @@ public class ListAdd {
     }
 
     @Benchmark
+    @Comment("Add 2 as (byte)2. Can only be used if you save up to 255 different values obviously")
     public void addToByteArrayOutputStream() {
         baos.write((byte) 2);
     }

@@ -1,5 +1,9 @@
 package com.chibik.perf;
 
+import com.chibik.perf.util.Comment;
+import com.chibik.perf.util.ReportIncluded;
+import com.chibik.perf.util.Score;
+import com.chibik.perf.util.ScoreTimeUnit;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.CMYKColor;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -9,6 +13,7 @@ import org.openjdk.jmh.annotations.Measurement;
 import org.openjdk.jmh.results.RunResult;
 
 import java.io.FileOutputStream;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -26,6 +31,9 @@ public class BenchmarkReportGenerator {
 
     private Font tableFont = FontFactory.getFont(
             FontFactory.COURIER, 8, Font.NORMAL,	new CMYKColor(0, 0, 0, 255)
+    );
+    private Font descriptionFont = FontFactory.getFont(
+            FontFactory.COURIER, 10, Font.NORMAL,	new CMYKColor(0, 0, 0, 255)
     );
     private Font chapterFont = FontFactory.getFont(
             FontFactory.HELVETICA, 14, Font.BOLD,	new CMYKColor(0, 0, 0, 255)
@@ -56,13 +64,28 @@ public class BenchmarkReportGenerator {
 
             for(Map.Entry<String, List<RunResult>> entry : aggregatedByClassName.entrySet()) {
 
+                Class<?> benchmarkClass = this.getClass().getClassLoader().loadClass(entry.getKey());
+
+                ReportIncluded reportIncluded = benchmarkClass.getAnnotation(ReportIncluded.class);
+
+                if(reportIncluded == null) {
+                    continue;
+                }
+
                 document.add(new Paragraph((counter++) + "." + entry.getKey(), chapterFont));
+                document.add(new Paragraph("\n"));
+
+                Comment comment = benchmarkClass.getAnnotation(Comment.class);
+                if(comment != null) {
+                    document.add(new Paragraph(comment.value(), descriptionFont));
+                    document.add(new Paragraph("\n"));
+                }
 
                 RunResult first = entry.getValue().get(0);
                 List<String> parameterKeys = new ArrayList<>(first.getParams().getParamsKeys());
                 boolean usedBatch = first.getParams().getMeasurement().getBatchSize() > 1;
 
-                int columns = 3 + parameterKeys.size() + (usedBatch ? 2 : 0);
+                int columns = 4 + parameterKeys.size() + (usedBatch ? 3 : 0);
                 float[] columnWidth = new float[columns];
                 columnWidth[0] = 200f;
 
@@ -74,9 +97,10 @@ public class BenchmarkReportGenerator {
                     columnWidth[i] = parameterColumnWidth;
                 }
 
-                for(int i = parameterStartIndex + parameterKeys.size(); i < columns; i++) {
+                for(int i = parameterStartIndex + parameterKeys.size(); i < columns - 1; i++) {
                     columnWidth[i] = 90f;
                 }
+                columnWidth[columns - 1] = 300f;
 
                 PdfPTable table = new PdfPTable(columns);
                 table.setTotalWidth(columnWidth);
@@ -86,6 +110,7 @@ public class BenchmarkReportGenerator {
                     table.addCell(new PdfPCell(new Phrase(param, tableFont)));
                 }
                 if(usedBatch) {
+                    table.addCell(new PdfPCell(new Phrase("Batch size", tableFont)));
                     table.addCell(new PdfPCell(new Phrase("Score(total)", tableFont)));
                     table.addCell(new PdfPCell(new Phrase("Score unit", tableFont)));
                     table.addCell(new PdfPCell(new Phrase("Per op(per call)", tableFont)));
@@ -94,7 +119,10 @@ public class BenchmarkReportGenerator {
                     table.addCell(new PdfPCell(new Phrase("Score", tableFont)));
                     table.addCell(new PdfPCell(new Phrase("Score unit", tableFont)));
                 }
+                table.addCell(new PdfPCell(new Phrase("Description", tableFont)));
+
                 for(RunResult result : entry.getValue()) {
+
                     table.addCell(new PdfPCell(
                             new Phrase(result.getParams().getBenchmark().replace("com.chibik.perf.", ""), tableFont)
                     ));
@@ -105,22 +133,31 @@ public class BenchmarkReportGenerator {
                         ));
                     }
 
-                    table.addCell(new PdfPCell(
-                            new Phrase(String.format("%.2f", result.getPrimaryResult().getScore()), tableFont)
-                    ));
-                    table.addCell(new PdfPCell(
-                            new Phrase(result.getPrimaryResult().getScoreUnit(), tableFont)
-                    ));
                     if(usedBatch) {
-                        double score = result.getPrimaryResult().getScore();
                         int batchSize = result.getParams().getMeasurement().getBatchSize();
+                        table.addCell(new PdfPCell(new Phrase("" + batchSize, tableFont)));
+                    }
 
-                        table.addCell(new PdfPCell(
-                                new Phrase(String.format("%.2f", 1.0*result.getPrimaryResult().getScore()/batchSize), tableFont)
-                        ));
-                        table.addCell(new PdfPCell(
-                                new Phrase(result.getPrimaryResult().getScoreUnit(), tableFont)
-                        ));
+                    Score score = new Score(result.getPrimaryResult().getScore(), ScoreTimeUnit.byTimeUnit(result.getPrimaryResult().getScoreUnit()));
+
+                    table.addCell(new PdfPCell(new Phrase(String.format("%.3f", score.getVal()), tableFont)));
+                    table.addCell(new PdfPCell(new Phrase(score.getUnit().getValue(), tableFont)));
+
+                    if(usedBatch) {
+                        int batchSize = result.getParams().getMeasurement().getBatchSize();
+                        Score batchPerOpScore = new Score(score.getVal()/batchSize, score.getUnit());
+                        Score convertedPerOpScore = ScoreTimeUnit.convertToReadable(batchPerOpScore);
+
+                        table.addCell(new PdfPCell(new Phrase(String.format("%.3f", convertedPerOpScore.getVal()), tableFont)));
+                        table.addCell(new PdfPCell(new Phrase(convertedPerOpScore.getUnit().getValue(), tableFont)));
+                    }
+
+                    Method benchmarkMethod = benchmarkClass.getDeclaredMethod(result.getPrimaryResult().getLabel());
+                    Comment methodComment = benchmarkMethod.getAnnotation(Comment.class);
+                    if(methodComment != null) {
+                        table.addCell(new PdfPCell(new Phrase(methodComment.value(), tableFont)));
+                    } else {
+                        table.addCell(new PdfPCell(new Phrase("", tableFont)));
                     }
                 }
 
