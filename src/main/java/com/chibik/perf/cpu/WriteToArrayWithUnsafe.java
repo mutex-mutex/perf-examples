@@ -1,7 +1,7 @@
 package com.chibik.perf.cpu;
 
 import com.chibik.perf.BenchmarkRunner;
-import com.chibik.perf.concurrency.support.UnsafeTool;
+import com.chibik.perf.util.UnsafeTool;
 import org.openjdk.jmh.annotations.*;
 import sun.misc.Unsafe;
 

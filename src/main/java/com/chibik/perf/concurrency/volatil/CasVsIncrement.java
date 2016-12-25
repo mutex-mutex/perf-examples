@@ -1,7 +1,9 @@
 package com.chibik.perf.concurrency.volatil;
 
 import com.chibik.perf.BenchmarkRunner;
-import com.chibik.perf.concurrency.support.UnsafeTool;
+import com.chibik.perf.util.UnsafeTool;
+import com.chibik.perf.util.Comment;
+import com.chibik.perf.util.Included;
 import org.openjdk.jmh.annotations.*;
 import sun.misc.Unsafe;
 
@@ -14,6 +16,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @Warmup(iterations = 10, batchSize = CasVsIncrement.BATCH_SIZE)
 @Measurement(iterations = 10, batchSize = CasVsIncrement.BATCH_SIZE)
+@Included
 public class CasVsIncrement {
 
     public static final int BATCH_SIZE = 10_000_000;
@@ -38,13 +41,13 @@ public class CasVsIncrement {
     }
 
     @Benchmark
-    //lock xadd
-    public long loadVolatile() {
+    @Comment("Increment using AtomicLong.incrementAndGet() that uses lock xadd on x86. Uses a single thread")
+    public long incrementThroughLockXadd() {
         return counter.incrementAndGet();
     }
 
     @Benchmark
-    //lock cmpxchg
+    @Comment("Increment using CAS loop through Unsafe. Uses a single thread")
     public long plainCas() {
         long var6;
         do {

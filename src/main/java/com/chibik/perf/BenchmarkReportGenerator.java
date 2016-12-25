@@ -1,7 +1,7 @@
 package com.chibik.perf;
 
 import com.chibik.perf.util.Comment;
-import com.chibik.perf.util.ReportIncluded;
+import com.chibik.perf.util.Included;
 import com.chibik.perf.util.Score;
 import com.chibik.perf.util.ScoreTimeUnit;
 import com.itextpdf.text.*;
@@ -9,16 +9,12 @@ import com.itextpdf.text.pdf.CMYKColor;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import org.openjdk.jmh.annotations.Measurement;
 import org.openjdk.jmh.results.RunResult;
 
 import java.io.FileOutputStream;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static java.lang.String.valueOf;
@@ -66,9 +62,9 @@ public class BenchmarkReportGenerator {
 
                 Class<?> benchmarkClass = this.getClass().getClassLoader().loadClass(entry.getKey());
 
-                ReportIncluded reportIncluded = benchmarkClass.getAnnotation(ReportIncluded.class);
+                Included included = benchmarkClass.getAnnotation(Included.class);
 
-                if(reportIncluded == null) {
+                if(included == null) {
                     continue;
                 }
 
@@ -152,6 +148,7 @@ public class BenchmarkReportGenerator {
                         table.addCell(new PdfPCell(new Phrase(convertedPerOpScore.getUnit().getValue(), tableFont)));
                     }
 
+                    System.out.println(result.getPrimaryResult().getLabel());
                     Method benchmarkMethod = benchmarkClass.getDeclaredMethod(result.getPrimaryResult().getLabel());
                     Comment methodComment = benchmarkMethod.getAnnotation(Comment.class);
                     if(methodComment != null) {

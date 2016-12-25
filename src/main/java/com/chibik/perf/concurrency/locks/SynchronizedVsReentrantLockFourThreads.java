@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 @State(Scope.Benchmark)
-@Threads(4)
 @BenchmarkMode(Mode.Throughput)
 @Measurement(timeUnit = TimeUnit.SECONDS)
 public class SynchronizedVsReentrantLockFourThreads {
@@ -45,6 +44,6 @@ public class SynchronizedVsReentrantLockFourThreads {
 
     public static void main(String[] args) {
 
-        BenchmarkRunner.runSimple(SynchronizedVsReentrantLockFourThreads.class, TimeUnit.SECONDS);
+        BenchmarkRunner.runSimple(SynchronizedVsReentrantLockFourThreads.class);
     }
 }

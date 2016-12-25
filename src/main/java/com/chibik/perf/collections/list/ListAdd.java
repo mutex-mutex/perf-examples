@@ -1,7 +1,7 @@
 package com.chibik.perf.collections.list;
 
 import com.chibik.perf.BenchmarkRunner;
-import com.chibik.perf.util.ReportIncluded;
+import com.chibik.perf.util.Included;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import org.openjdk.jmh.annotations.*;
@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 @Warmup(batchSize = ListAdd.BATCH_SIZE, iterations = 40)
 @Measurement(batchSize = ListAdd.BATCH_SIZE, iterations = 40)
-@ReportIncluded
+@Included
 public class ListAdd {
 
     public static final int BATCH_SIZE = 1000000;

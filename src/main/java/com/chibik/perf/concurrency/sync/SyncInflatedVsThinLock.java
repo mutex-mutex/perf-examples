@@ -1,6 +1,7 @@
 package com.chibik.perf.concurrency.sync;
 
 import com.chibik.perf.BenchmarkRunner;
+import com.chibik.perf.util.Comment;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Control;
 
@@ -11,6 +12,7 @@ import static org.openjdk.jmh.annotations.Mode.AverageTime;
 @State(Scope.Benchmark)
 @BenchmarkMode(AverageTime)
 @Measurement(iterations = 5)
+@Comment("long++ inside critical section using synchronized")
 public class SyncInflatedVsThinLock {
 
     /*WARNING: VERY ROUGH TEST*/

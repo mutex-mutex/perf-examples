@@ -1,6 +1,6 @@
 package com.chibik.perf.concurrency.volatil;
 
-import com.chibik.perf.concurrency.support.UnsafeTool;
+import com.chibik.perf.util.UnsafeTool;
 import sun.misc.Contended;
 import sun.misc.Unsafe;
 
