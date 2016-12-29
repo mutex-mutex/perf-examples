@@ -12,8 +12,9 @@ import java.util.concurrent.TimeUnit;
 
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.SingleShotTime)
-@Warmup(batchSize = AnotherMapTest.BATCH_SIZE, iterations = 20, timeUnit = TimeUnit.MICROSECONDS)
-@Measurement(batchSize = AnotherMapTest.BATCH_SIZE, iterations = 20, timeUnit = TimeUnit.MICROSECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
+@Warmup(batchSize = AnotherMapTest.BATCH_SIZE, iterations = 20)
+@Measurement(batchSize = AnotherMapTest.BATCH_SIZE, iterations = 20)
 public class AnotherMapTest {
 
     public static final int BATCH_SIZE = 1000000;
@@ -38,6 +39,10 @@ public class AnotherMapTest {
 
         concurrentMap = new ConcurrentHashMap<>(1000000);
         hashMap = new HashMap<>(1000000);
+
+        System.gc();
+        System.gc();
+        System.gc();
     }
 
     @Benchmark

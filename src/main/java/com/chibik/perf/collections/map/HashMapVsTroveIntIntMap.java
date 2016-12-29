@@ -1,6 +1,7 @@
 package com.chibik.perf.collections.map;
 
 import com.chibik.perf.BenchmarkRunner;
+import com.chibik.perf.util.Included;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.openjdk.jmh.annotations.*;
 
@@ -11,8 +12,10 @@ import java.util.concurrent.TimeUnit;
 
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.SingleShotTime)
-@Warmup(batchSize = 1000000, iterations = 20, timeUnit = TimeUnit.MICROSECONDS)
-@Measurement(batchSize = 1000000, iterations = 20, timeUnit = TimeUnit.MICROSECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
+@Warmup(batchSize = 1000000, iterations = 20)
+@Measurement(batchSize = 1000000, iterations = 20)
+@Included
 public class HashMapVsTroveIntIntMap {
 
     private Map<Integer, Integer> hashMap;

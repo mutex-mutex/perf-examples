@@ -13,8 +13,9 @@ import java.util.concurrent.TimeUnit;
 
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.SingleShotTime)
-@Warmup(batchSize = HasMapVsConcurrentHashMapPutSingleThreaded.BATCH_SIZE, iterations = 500, timeUnit = TimeUnit.MICROSECONDS)
-@Measurement(batchSize = HasMapVsConcurrentHashMapPutSingleThreaded.BATCH_SIZE, iterations = 500, timeUnit = TimeUnit.MICROSECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
+@Warmup(batchSize = HasMapVsConcurrentHashMapPutSingleThreaded.BATCH_SIZE, iterations = 500)
+@Measurement(batchSize = HasMapVsConcurrentHashMapPutSingleThreaded.BATCH_SIZE, iterations = 500)
 public class HasMapVsConcurrentHashMapPutSingleThreaded {
 
     public static final int BATCH_SIZE = 1000000;
@@ -41,7 +42,7 @@ public class HasMapVsConcurrentHashMapPutSingleThreaded {
 
         concurrentMap = new ConcurrentHashMap<>(1000000);
         hashMap = new HashMap<>(1000000);
-        tLongLongHashMap = new TLongLongHashMap();
+        tLongLongHashMap = new TLongLongHashMap(1000000);
     }
 
     @TearDown(Level.Iteration)
