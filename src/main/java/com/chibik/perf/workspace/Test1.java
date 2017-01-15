@@ -4,7 +4,7 @@ import java.util.concurrent.ForkJoinPool;
 
 public class Test1 {
 
-    private static byte shared = 0x1a;
+    private static byte shared = 0x1c;
 
     static {
         System.out.println("initial=" + shared + "/");
@@ -19,14 +19,7 @@ public class Test1 {
 
         ForkJoinPool.commonPool().submit(
                 () -> {
-                    for(int i = 0; i < 10_000_000; i++) {
-                        System.out.print(shared + "/");
-                        try {
-                            Thread.sleep(100L);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    System.out.println(load());
                 }
         );
 
@@ -37,9 +30,18 @@ public class Test1 {
         }
     }
 
-    private static void store () {
+    private static void store() {
         for(int i = 0; i < 100_000_000; i++) {
             shared++;
         }
+    }
+
+    private static int load() {
+        int z = 0;
+        for(int i = 0; i < (2 << 4) * 100_000; i++) {
+            byte v = shared;
+            z ^= v;
+        }
+        return z;
     }
 }

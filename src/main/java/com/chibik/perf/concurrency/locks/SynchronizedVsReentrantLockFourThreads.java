@@ -1,6 +1,7 @@
 package com.chibik.perf.concurrency.locks;
 
 import com.chibik.perf.BenchmarkRunner;
+import com.chibik.perf.util.Included;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.concurrent.TimeUnit;
@@ -9,6 +10,7 @@ import java.util.concurrent.locks.ReentrantLock;
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.Throughput)
 @Measurement(timeUnit = TimeUnit.SECONDS)
+@Included
 public class SynchronizedVsReentrantLockFourThreads {
 
     private ReentrantLock lock = new ReentrantLock(false);
