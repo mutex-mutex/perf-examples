@@ -78,6 +78,8 @@ public class HasMapVsConcurrentHashMapGetSingleThreaded {
     }
 
     public static void main(String[] args) {
-        BenchmarkRunner.runSimple(HasMapVsConcurrentHashMapGetSingleThreaded.class, TimeUnit.MILLISECONDS);
+        BenchmarkRunner.runSimple(
+                HasMapVsConcurrentHashMapGetSingleThreaded.class,
+                TimeUnit.MILLISECONDS);
     }
 }

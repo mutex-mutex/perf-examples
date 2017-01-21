@@ -23,7 +23,7 @@ public class AnotherMapTest {
 
     private Map<Long, Long> hashMap;
 
-    private long[] data = new long[1000000];
+    private long[] data = new long[BATCH_SIZE];
     private int index;
 
     {
@@ -47,18 +47,21 @@ public class AnotherMapTest {
 
     @Benchmark
     public void testPutConcurrentHashMap() {
-        concurrentMap.put(data[index++], 1L);
+        concurrentMap.put(data[index], 1L);
+        index++;
     }
 
     @Benchmark
     public void testPutHashMap() {
-        hashMap.put(data[index++], 1L);
+        hashMap.put(data[index], 1L);
+        index++;
     }
 
     public static void main(String[] args) {
         BenchmarkRunner.runSimple(
                 AnotherMapTest.class,
-                TimeUnit.MILLISECONDS
+                TimeUnit.MILLISECONDS,
+                "-XX:LoopUnrollLimit=1"
         );
     }
 }
