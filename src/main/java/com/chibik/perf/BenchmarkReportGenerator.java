@@ -9,6 +9,7 @@ import com.itextpdf.text.pdf.CMYKColor;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import org.openjdk.jmh.annotations.Group;
 import org.openjdk.jmh.results.RunResult;
 
 import java.io.FileOutputStream;
@@ -17,7 +18,6 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.lang.String.valueOf;
 import static java.util.stream.Collectors.toList;
 
 public class BenchmarkReportGenerator {
@@ -148,13 +148,34 @@ public class BenchmarkReportGenerator {
                         table.addCell(new PdfPCell(new Phrase(convertedPerOpScore.getUnit().getValue(), tableFont)));
                     }
 
-                    System.out.println(result.getPrimaryResult().getLabel());
-                    Method benchmarkMethod = benchmarkClass.getDeclaredMethod(result.getPrimaryResult().getLabel());
-                    Comment methodComment = benchmarkMethod.getAnnotation(Comment.class);
-                    if(methodComment != null) {
-                        table.addCell(new PdfPCell(new Phrase(methodComment.value(), tableFont)));
-                    } else {
-                        table.addCell(new PdfPCell(new Phrase("", tableFont)));
+                    try {
+                        String label = result.getPrimaryResult().getLabel();
+                        Method benchmarkMethod = null;
+                        for(Method method : benchmarkClass.getDeclaredMethods()) {
+                            Group gr = method.getAnnotation(Group.class);
+                            if(gr!= null) {
+                                System.out.println("gr.value=" + gr.value());
+                                System.out.println(gr.value().equals(label));
+                                System.out.println(label);
+                            }
+                            if(gr != null && gr.value().equals(label)) {
+                                benchmarkMethod = method;
+                                break;
+                            }
+                        }
+                        if(benchmarkMethod != null) {
+                            Comment methodComment = benchmarkMethod.getAnnotation(Comment.class);
+                            if (methodComment != null) {
+                                table.addCell(new PdfPCell(new Phrase(methodComment.value(), tableFont)));
+                            } else {
+                                table.addCell(new PdfPCell(new Phrase("No comment", tableFont)));
+                            }
+                        } else {
+                            table.addCell(new PdfPCell(new Phrase("No method", tableFont)));
+                        }
+
+                    } catch(Exception e) {
+                        table.addCell(new PdfPCell(new Phrase("Error!!!", tableFont)));
                     }
                 }
 

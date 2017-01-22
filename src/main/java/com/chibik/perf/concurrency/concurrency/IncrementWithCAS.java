@@ -83,7 +83,6 @@ public class IncrementWithCAS {
         return var6;
     }
 
-
     public static void main(String[] args) {
         BenchmarkRunner.runSimple(IncrementWithCAS.class);
     }

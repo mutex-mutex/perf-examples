@@ -36,6 +36,7 @@ public class SyncInflatedVsThinLock {
     @Benchmark
     @Group("thinlock")
     @GroupThreads(value = 1)
+    @Comment("Sync1")
     public void sync1(Control cnt) {
         while (!cnt.stopMeasurement && !flag.compareAndSet(false, true)) {
             synchronized (entity) {
@@ -47,6 +48,7 @@ public class SyncInflatedVsThinLock {
     @Benchmark
     @Group("thinlock")
     @GroupThreads(value = 1)
+    @Comment("Sync1")
     public void sync2(Control cnt) {
         while (!cnt.stopMeasurement && !flag.compareAndSet(true, false)) {
             synchronized (entity) {

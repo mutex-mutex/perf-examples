@@ -3,8 +3,12 @@ package com.chibik.perf.concurrency.locks;
 import com.chibik.perf.BenchmarkRunner;
 import com.chibik.perf.util.Comment;
 import com.chibik.perf.util.MultipleOps;
+import com.chibik.perf.util.UnsafeTool;
 import org.openjdk.jmh.annotations.*;
+import sun.misc.Contended;
+import sun.misc.Unsafe;
 
+import java.lang.reflect.Field;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.*;
 import java.util.concurrent.locks.LockSupport;
@@ -33,6 +37,7 @@ public class LockTest {
     private ReentrantLock reentrantLock = new ReentrantLock();
     private Object object = new Object();
     private ListLockV1 listLockV1 = new ListLockV1();
+    private ListLockV2 listLockV2 = new ListLockV2();
 
     @Setup(Level.Iteration)
     public void setUp() {
@@ -167,7 +172,6 @@ public class LockTest {
             counter++;
         }
     }
-    */
 
     @Benchmark
     @GroupThreads(4)
@@ -184,6 +188,26 @@ public class LockTest {
                 counter++;
             } finally {
                 listLockV1.unlock(node);
+            }
+        }
+    }
+    */
+
+    @Benchmark
+    @GroupThreads(4)
+    @Group("mcsLockv2")
+    @Comment("MCS lock v2")
+    @MultipleOps(100)
+    public void mcsLockV2() {
+        ListLockV2.NodeV2 node = new ListLockV2.NodeV2();
+
+        for(int i = 0; i < 100; i++) {
+            listLockV2.lock(node);
+            try {
+
+                counter++;
+            } finally {
+                listLockV2.unlock(node);
             }
         }
     }
@@ -296,7 +320,7 @@ public class LockTest {
         }
     }
 
-    protected static class ListLockV1 {
+    public static class ListLockV1 {
 
         public static class Node {
 
@@ -329,7 +353,12 @@ public class LockTest {
         }
     }
 
-    protected static class ListLockV2 {
+    public static class ListLockV2 {
+
+        public static long NODE_NEXT_OFFSET;
+        public static long NODE_LOCKED_OFFSET;
+        public static long LOCK_TAIL_OFFSET;
+        public static final Unsafe unsafe = UnsafeTool.getUnsafe();
 
         public static class NodeV2 {
 
@@ -337,30 +366,50 @@ public class LockTest {
             public volatile boolean locked = false;
         }
 
-        private volatile NodeV2 tail;
+        static {
+            try {
 
-        public void lock(ListLockV1.Node node) {
-            node.next.set(null);
+                Field nextField = NodeV2.class.getDeclaredField("next");
+                NODE_NEXT_OFFSET = unsafe.objectFieldOffset(nextField);
+                Field lockedField = NodeV2.class.getDeclaredField("locked");
+                NODE_LOCKED_OFFSET = unsafe.objectFieldOffset(lockedField);
+                Field tailField = ListLockV2.class.getDeclaredField("tail");
+                tailField.setAccessible(true);
+                LOCK_TAIL_OFFSET = unsafe.objectFieldOffset(tailField);
+            } catch (Exception e) {
 
-            ListLockV1.Node predecessor = tail.getAndSet(node);
+                throw new RuntimeException(e);
+            }
+        }
+
+        private volatile NodeV2 tail = null;
+
+        public void lock(ListLockV2.NodeV2 node) {
+
+            unsafe.putOrderedObject(node, NODE_NEXT_OFFSET, null);
+
+            ListLockV2.NodeV2 predecessor = (ListLockV2.NodeV2)
+                    unsafe.getAndSetObject(this, LOCK_TAIL_OFFSET, node);
 
             if(predecessor != null) {
-                node.locked.set(true);
-                predecessor.next.set(node);
-                while(node.locked.get());
+                unsafe.putOrderedInt(node, NODE_LOCKED_OFFSET, 1);
+                unsafe.putObjectVolatile(predecessor, NODE_NEXT_OFFSET, node);
+                while(unsafe.getBooleanVolatile(node, NODE_LOCKED_OFFSET));
             }
         }
 
-        public void unlock(ListLockV1.Node node) {
-            if(node.next.get() == null) {
-                if(tail.compareAndSet(node, null)) {
+        public void unlock(ListLockV2.NodeV2 node) {
+            if(unsafe.getObjectVolatile(node, NODE_NEXT_OFFSET) == null) {
+                if(unsafe.compareAndSwapObject(this, LOCK_TAIL_OFFSET, node, null)) {
                     return;
                 }
-                while(node.next.get() == null);
+                while(unsafe.getObjectVolatile(node, NODE_NEXT_OFFSET) == null);
             }
-            node.next.get().locked.set(false);
+            NodeV2 next = (NodeV2) unsafe.getObjectVolatile(node, NODE_NEXT_OFFSET);
+            unsafe.putOrderedInt(next, NODE_LOCKED_OFFSET, 0);
         }
     }
+
 
     public static void main(String[] args) {
 
